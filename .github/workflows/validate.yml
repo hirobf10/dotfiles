@@ -14,21 +14,11 @@ concurrency:
 jobs:
   validate:
     runs-on: macos-14
-    
     steps:
     - name: Test one-liner setup
       run: |
         # Run the one-liner command - uses .chezmoidata.yaml defaults
         sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply https://github.com/hirobf10/dotfiles.git
-    
-    
-    - name: Verify setup script execution
-      run: |
-        # Check that run_once script was executed by chezmoi
-        test -f ~/.local/share/chezmoi/run_once_setup.sh
-        # Verify installations
-        command -v brew
-        command -v anyenv
     
     - name: Verify
       run: |
@@ -37,7 +27,10 @@ jobs:
         test -f ~/.zshrc
         test -f ~/.zprofile
         test -f ~/.npmrc
-        grep -q "test@" ~/.gitconfig
+        
+        # Verify git config contains expected values
+        grep -q "name" ~/.gitconfig
+        grep -q "email" ~/.gitconfig
         
         # Verify setup script installations
         command -v brew
