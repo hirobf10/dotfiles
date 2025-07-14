@@ -122,4 +122,3 @@ export PATH="$HOME/.npm-global/bin:$PATH"
 
 # google cloud binaries
 export PATH="$HOME/.google-cloud-sdk/bin:$PATH"
-
