@@ -2,6 +2,13 @@
 
 chezmoiを使用したdotfiles管理リポジトリ
 
+## 前提条件
+
+新しいMacの場合、最初にCommand Line Developer Toolsをインストール：
+```bash
+xcode-select --install
+```
+
 ## クイックスタート
 
 ```bash
