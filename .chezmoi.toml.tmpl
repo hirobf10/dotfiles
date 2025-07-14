@@ -1,0 +1,10 @@
+{{- $name := promptStringOnce . "name" "Your name" -}}
+{{- $environment := promptChoiceOnce . "environment" "Environment type" (list "personal" "work") -}}
+{{- $workEmail := promptStringOnce . "work_email" "Work email" -}}
+{{- $personalEmail := promptStringOnce . "personal_email" "Personal email" -}}
+
+[data]
+    name = {{ $name | quote }}
+    environment = {{ $environment | quote }}
+    work_email = {{ $workEmail | quote }}
+    personal_email = {{ $personalEmail | quote }}

@@ -15,6 +15,12 @@ xcode-select --install
 sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply https://github.com/hirobf10/dotfiles.git
 ```
 
+初回実行時に以下の情報を聞かれます：
+- 名前
+- 環境タイプ（personal/work）
+- 仕事用メールアドレス
+- 個人用メールアドレス
+
 ## 環境設定
 
 初回実行時に環境（`work`/`personal`）を選択します。
