@@ -1,0 +1,57 @@
+name: Validate Dotfiles
+
+on:
+  push:
+    branches: [ main ]
+    paths-ignore:
+      - '**.md'
+      - '.chezmoiignore'
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: macos-14
+    strategy:
+      fail-fast: false
+      matrix:
+        environment: [work, personal]
+    
+    steps:
+    - uses: actions/checkout@v4
+    
+    - name: Run setup script
+      run: |
+        chmod +x scripts/setup.sh
+        ./scripts/setup.sh
+    
+    - name: Setup test configuration
+      run: |
+        mkdir -p ~/.config/chezmoi
+        cat > ~/.config/chezmoi/chezmoi.toml << EOF
+        [data]
+            name = "Test User"
+            environment = "${{ matrix.environment }}"
+            work_email = "test@company.com"
+            personal_email = "test@personal.com"
+        EOF
+    
+    - name: Apply chezmoi
+      run: chezmoi init --source="." --apply
+    
+    - name: Verify
+      run: |
+        # Verify chezmoi applied correctly
+        test -f ~/.gitconfig
+        test -f ~/.zshrc
+        test -f ~/.zprofile
+        grep -q "test@" ~/.gitconfig
+        
+        # Verify setup script installations
+        command -v brew
+        command -v chezmoi
+        command -v direnv
+        command -v anyenv
+        test -d ~/.oh-my-zsh

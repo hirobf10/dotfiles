@@ -1,0 +1,50 @@
+# Dotfiles
+
+chezmoiを使用したdotfiles管理リポジトリ
+
+## クイックスタート
+
+```bash
+sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply https://github.com/hirobf10/dotfiles.git
+```
+
+## 環境設定
+
+初回実行時に環境（`work`/`personal`）を選択します。
+
+設定変更：
+```bash
+chezmoi edit-config  # 設定編集
+chezmoi apply        # 変更適用
+```
+
+## 開発環境セットアップ
+
+```bash
+chezmoi cd
+./scripts/setup.sh
+```
+
+自動インストール内容：
+- Homebrew、Oh My Zsh
+- anyenv（pyenv、nodenv、tfenv）
+- Python 3.12、Node.js LTS、Terraform最新版
+- VSCode拡張機能（`brew bundle`経由）
+- その他開発ツール（詳細は`scripts/Brewfile`参照）
+
+## 基本操作
+
+```bash
+chezmoi add ~/.dotfile       # ファイル追加
+chezmoi diff                 # 差分確認
+chezmoi apply                # 変更適用
+chezmoi cd                   # ソースディレクトリへ移動
+```
+
+## 管理ファイル
+
+- `.gitconfig` - Git設定（環境別メール）
+- `.zshrc` - Zsh設定
+- `.zprofile` - Homebrew初期化
+- `.claude/CLAUDE.md` - 開発設定
+- `.npmrc` - npm設定

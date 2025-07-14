@@ -1,0 +1,11 @@
+[user]
+	name = {{ .name }}
+{{- if eq .environment "work" }}
+	email = {{ .work_email }}
+{{- else }}
+	email = {{ .personal_email }}
+{{- end }}
+[core]
+	symlinks = true
+[push]
+	autoSetupRemote = true
