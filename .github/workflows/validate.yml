@@ -14,27 +14,11 @@ concurrency:
 jobs:
   validate:
     runs-on: macos-14
-    strategy:
-      fail-fast: false
-      matrix:
-        environment: [work, personal]
     
     steps:
-    - name: Setup test configuration first
-      run: |
-        # Create config before running chezmoi to avoid template errors
-        mkdir -p ~/.config/chezmoi
-        cat > ~/.config/chezmoi/chezmoi.toml << EOF
-        [data]
-            name = "Test User"
-            environment = "${{ matrix.environment }}"
-            work_email = "test@company.com"
-            personal_email = "test@personal.com"
-        EOF
-    
     - name: Test one-liner setup
       run: |
-        # Run the one-liner command with existing config
+        # Run the one-liner command - uses .chezmoidata.yaml defaults
         sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply https://github.com/hirobf10/dotfiles.git
     
     
