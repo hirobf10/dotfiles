@@ -17,8 +17,8 @@ jobs:
     steps:
     - name: Test one-liner setup
       run: |
-        # Run the one-liner command - uses .chezmoidata.yaml defaults
-        sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply https://github.com/hirobf10/dotfiles.git
+        # Run the one-liner command with --no-tty for CI
+        sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply --no-tty https://github.com/hirobf10/dotfiles.git
     
     - name: Verify
       run: |

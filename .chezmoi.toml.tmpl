@@ -1,0 +1,5 @@
+[data]
+    name = {{ promptStringOnce . "name" "Your name" "Your Name" | quote }}
+    environment = {{ promptStringOnce . "environment" "Environment (personal/work)" "personal" | quote }}
+    work_email = {{ promptStringOnce . "work_email" "Work email" "work@example.com" | quote }}
+    personal_email = {{ promptStringOnce . "personal_email" "Personal email" "personal@example.com" | quote }}
