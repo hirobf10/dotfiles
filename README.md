@@ -31,17 +31,14 @@ chezmoi apply        # 変更を適用
 
 ## 開発環境セットアップ
 
-```bash
-chezmoi cd
-./scripts/setup.sh
-```
+初回の`chezmoi apply`時に自動的にセットアップスクリプトが実行されます。
 
 自動インストール内容：
 - Homebrew、Oh My Zsh
 - anyenv（pyenv、nodenv、tfenv）
 - Python 3.12、Node.js LTS、Terraform最新版
 - VSCode拡張機能（`brew bundle`経由）
-- その他開発ツール（詳細は`scripts/Brewfile`参照）
+- その他開発ツール（詳細は`Brewfile`参照）
 
 ## 基本操作
 

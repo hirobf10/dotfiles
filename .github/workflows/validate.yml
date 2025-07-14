@@ -38,10 +38,13 @@ jobs:
         sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply https://github.com/hirobf10/dotfiles.git
     
     
-    - name: Run setup script
+    - name: Verify setup script execution
       run: |
-        cd ~/.local/share/chezmoi
-        ./scripts/setup.sh
+        # Check that run_once script was executed by chezmoi
+        test -f ~/.local/share/chezmoi/run_once_setup.sh
+        # Verify installations
+        command -v brew
+        command -v anyenv
     
     - name: Verify
       run: |
