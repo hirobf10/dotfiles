@@ -20,15 +20,9 @@ jobs:
         environment: [work, personal]
     
     steps:
-    - uses: actions/checkout@v4
-    
-    - name: Run setup script
+    - name: Setup test configuration first
       run: |
-        chmod +x scripts/setup.sh
-        ./scripts/setup.sh
-    
-    - name: Setup test configuration
-      run: |
+        # Create config before running chezmoi to avoid template errors
         mkdir -p ~/.config/chezmoi
         cat > ~/.config/chezmoi/chezmoi.toml << EOF
         [data]
@@ -38,8 +32,16 @@ jobs:
             personal_email = "test@personal.com"
         EOF
     
-    - name: Apply chezmoi
-      run: chezmoi init --source="." --apply
+    - name: Test one-liner setup
+      run: |
+        # Run the one-liner command with existing config
+        sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply https://github.com/hirobf10/dotfiles.git
+    
+    
+    - name: Run setup script
+      run: |
+        cd ~/.local/share/chezmoi
+        ./scripts/setup.sh
     
     - name: Verify
       run: |
@@ -47,6 +49,7 @@ jobs:
         test -f ~/.gitconfig
         test -f ~/.zshrc
         test -f ~/.zprofile
+        test -f ~/.npmrc
         grep -q "test@" ~/.gitconfig
         
         # Verify setup script installations
