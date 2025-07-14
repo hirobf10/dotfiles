@@ -1,5 +1,5 @@
 [data]
-    name = {{ promptStringOnce . "name" "Your name" "Your Name" | quote }}
-    environment = {{ promptStringOnce . "environment" "Environment (personal/work)" "personal" | quote }}
-    work_email = {{ promptStringOnce . "work_email" "Work email" "work@example.com" | quote }}
-    personal_email = {{ promptStringOnce . "personal_email" "Personal email" "personal@example.com" | quote }}
+    name = {{ env "CHEZMOI_NAME" | default (promptStringOnce . "name" "Your name" "Your Name") | quote }}
+    environment = {{ env "CHEZMOI_ENVIRONMENT" | default (promptStringOnce . "environment" "Environment (personal/work)" "personal") | quote }}
+    work_email = {{ env "CHEZMOI_WORK_EMAIL" | default (promptStringOnce . "work_email" "Work email" "work@example.com") | quote }}
+    personal_email = {{ env "CHEZMOI_PERSONAL_EMAIL" | default (promptStringOnce . "personal_email" "Personal email" "personal@example.com") | quote }}
