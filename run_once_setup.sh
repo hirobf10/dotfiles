@@ -33,7 +33,17 @@ if [ ! -f "$BREWFILE" ]; then
     exit 1
 fi
 
-brew bundle --file="$BREWFILE"
+# Run brew bundle with error handling for known issues
+if ! brew bundle --file="$BREWFILE"; then
+    echo "⚠️  Some packages may have had warnings during installation (this is normal for apps like Zoom)"
+    # Check if critical tools were installed
+    if command -v anyenv &>/dev/null && command -v direnv &>/dev/null; then
+        echo "✅ Critical tools were installed successfully"
+    else
+        echo "❌ Critical tools installation failed"
+        exit 1
+    fi
+fi
 
 # Install Oh My Zsh if not installed
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
