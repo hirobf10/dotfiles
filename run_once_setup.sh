@@ -11,7 +11,20 @@ fi
 
 # Install packages from Brewfile
 echo "📦 Installing Homebrew packages..."
-brew bundle --file="$(dirname "$0")/Brewfile"
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+BREWFILE="$SCRIPT_DIR/Brewfile"
+
+if [ ! -f "$BREWFILE" ]; then
+    # When run by chezmoi, script is in ~/.local/share/chezmoi
+    BREWFILE="$HOME/.local/share/chezmoi/Brewfile"
+fi
+
+if [ ! -f "$BREWFILE" ]; then
+    echo "No Brewfile found"
+    exit 1
+fi
+
+brew bundle --file="$BREWFILE"
 
 # Install Oh My Zsh if not installed
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
