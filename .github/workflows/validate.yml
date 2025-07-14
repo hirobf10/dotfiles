@@ -16,13 +16,8 @@ jobs:
     runs-on: macos-14
     steps:
     - name: Test one-liner setup
-      env:
-        CHEZMOI_NAME: "Test User"
-        CHEZMOI_ENVIRONMENT: "personal"
-        CHEZMOI_WORK_EMAIL: "test@work.com"
-        CHEZMOI_PERSONAL_EMAIL: "test@personal.com"
       run: |
-        # Run the one-liner command with environment variables for CI
+        # Run the one-liner command
         sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply https://github.com/hirobf10/dotfiles.git
     
     - name: Verify

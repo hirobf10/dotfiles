@@ -1,0 +1,7 @@
+[user]
+	name = Your Name
+	email = personal@example.com
+[core]
+	symlinks = true
+[push]
+	autoSetupRemote = true

@@ -15,19 +15,11 @@ xcode-select --install
 sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply https://github.com/hirobf10/dotfiles.git
 ```
 
-初回実行時は、一時的にデフォルト値が使用されます。その後、個人情報を設定してください：
+セットアップ後、gitの設定を更新してください：
 ```bash
-chezmoi edit-config  # 名前、メールアドレスを設定
-chezmoi apply        # 変更を適用
+git config --global user.name "Your Name"
+git config --global user.email "your-email@example.com"
 ```
-
-## 環境設定
-
-`~/.config/chezmoi/chezmoi.toml`を編集して、以下を設定：
-- `name`: あなたの名前
-- `environment`: `work` または `personal`
-- `work_email`: 仕事用メールアドレス
-- `personal_email`: 個人用メールアドレス
 
 ## 開発環境セットアップ
 
