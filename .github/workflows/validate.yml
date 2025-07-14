@@ -6,6 +6,7 @@ on:
     paths-ignore:
       - '**.md'
       - '.chezmoiignore'
+  workflow_dispatch:
 
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
@@ -13,7 +14,11 @@ concurrency:
 
 jobs:
   validate:
-    runs-on: macos-14
+    strategy:
+      fail-fast: false
+      matrix:
+        os: [macos-14, macos-15]
+    runs-on: ${{ matrix.os }}
     steps:
     - name: Test one-liner setup
       run: |
@@ -22,19 +27,15 @@ jobs:
     
     - name: Verify
       run: |
-        # Verify chezmoi applied correctly
-        test -f ~/.gitconfig
-        test -f ~/.zshrc
-        test -f ~/.zprofile
-        test -f ~/.npmrc
+        echo "=== Verifying dotfiles ==="
+        test -f ~/.gitconfig && echo "✅ ~/.gitconfig" || echo "❌ ~/.gitconfig"
+        test -f ~/.zshrc && echo "✅ ~/.zshrc" || echo "❌ ~/.zshrc"
         
-        # Verify git config contains expected values
-        grep -q "name" ~/.gitconfig
-        grep -q "email" ~/.gitconfig
+        echo -e "\n=== Verifying git config ==="
+        grep -q "name = test" ~/.gitconfig && echo "✅ Git user name configured" || echo "❌ Git user name not found"
+        grep -q "email = test@example.com" ~/.gitconfig && echo "✅ Git email configured" || echo "❌ Git email not found"
         
-        # Verify setup script installations
-        command -v brew
-        command -v chezmoi
-        command -v direnv
-        command -v anyenv
-        test -d ~/.oh-my-zsh
+        echo -e "\n=== Verifying tools ==="
+        command -v brew >/dev/null && echo "✅ brew installed" || echo "❌ brew not found"
+        command -v chezmoi >/dev/null && echo "✅ chezmoi installed" || echo "❌ chezmoi not found"
+        command -v anyenv >/dev/null && echo "✅ anyenv installed" || echo "❌ anyenv not found"

@@ -94,44 +94,44 @@ if command -v anyenv &>/dev/null; then
             eval "$(anyenv init -)"
         fi
         
-        # Install Python if not already installed
-        if command -v pyenv &>/dev/null && ! python3 --version &>/dev/null; then
+        # Install Python via pyenv
+        if command -v pyenv &>/dev/null; then
             echo "🐍 Installing latest Python 3.12..."
             # Get latest Python 3.12 version
             LATEST_PYTHON_312=$(pyenv install --list | grep -E "^\s*3\.12\.[0-9]+$" | tail -1 | xargs)
             if [ -n "$LATEST_PYTHON_312" ]; then
                 echo "📦 Installing Python $LATEST_PYTHON_312..."
-                pyenv install "$LATEST_PYTHON_312"
+                pyenv install -s "$LATEST_PYTHON_312"
                 pyenv global "$LATEST_PYTHON_312"
                 eval "$(pyenv init -)"
             else
                 echo "⚠️  Could not find Python 3.12 version. Installing 3.12.0..."
-                pyenv install 3.12.0
+                pyenv install -s 3.12.0
                 pyenv global 3.12.0
                 eval "$(pyenv init -)"
             fi
         fi
         
-        # Install Node.js if not already installed
-        if command -v nodenv &>/dev/null && ! node --version &>/dev/null; then
+        # Install Node.js via nodenv
+        if command -v nodenv &>/dev/null; then
             echo "🟢 Installing latest Node.js LTS..."
             # Get latest LTS version (even numbered major versions)
             LATEST_NODE_LTS=$(nodenv install --list | grep -E "^\s*[0-9]+\.[0-9]+\.[0-9]+$" | grep -E "^\s*(18|20|22)\." | tail -1 | xargs)
             if [ -n "$LATEST_NODE_LTS" ]; then
                 echo "📦 Installing Node.js $LATEST_NODE_LTS..."
-                nodenv install "$LATEST_NODE_LTS"
+                nodenv install -s "$LATEST_NODE_LTS"
                 nodenv global "$LATEST_NODE_LTS"
                 eval "$(nodenv init -)"
             else
                 echo "⚠️  Could not find Node.js LTS version. Installing 20.11.0..."
-                nodenv install 20.11.0
+                nodenv install -s 20.11.0
                 nodenv global 20.11.0
                 eval "$(nodenv init -)"
             fi
         fi
         
-        # Install Terraform if not already installed
-        if command -v tfenv &>/dev/null && ! terraform --version &>/dev/null; then
+        # Install Terraform via tfenv
+        if command -v tfenv &>/dev/null; then
             echo "🔧 Installing latest Terraform..."
             # Get latest stable version
             LATEST_TERRAFORM=$(tfenv list-remote | grep -E "^[0-9]+\.[0-9]+\.[0-9]+$" | head -1)
