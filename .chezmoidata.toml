@@ -1,0 +1,4 @@
+name = "Your Name"
+environment = "personal"
+work_email = "work@example.com"
+personal_email = "personal@example.com"
