@@ -18,7 +18,7 @@ jobs:
     - name: Test one-liner setup
       run: |
         # Run the one-liner command
-        sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply https://github.com/hirobf10/dotfiles.git
+        sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply --promptString "Git email address=test@example.com" --promptString "Git user name=test" hirobf10
     
     - name: Verify
       run: |

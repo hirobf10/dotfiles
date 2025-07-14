@@ -1,10 +1,6 @@
 [user]
 	name = {{ .name }}
-{{- if eq .environment "work" }}
-	email = {{ .work_email }}
-{{- else }}
-	email = {{ .personal_email }}
-{{- end }}
+	email = {{ .email }}
 [core]
 	symlinks = true
 [push]
