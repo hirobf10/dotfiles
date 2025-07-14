@@ -75,4 +75,3 @@ vscode "mosapride.zenkaku"
 
 # Themes & Icons
 vscode "github.github-vscode-theme"
-vscode "pkief.material-icon-theme"
