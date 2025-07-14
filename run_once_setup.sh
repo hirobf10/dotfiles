@@ -7,6 +7,15 @@ echo "🚀 Starting development environment setup..."
 if ! command -v brew &>/dev/null; then
     echo "📦 Installing Homebrew..."
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+    
+    # Add Homebrew to PATH based on system architecture
+    if [[ -f "/opt/homebrew/bin/brew" ]]; then
+        # Apple Silicon
+        eval "$(/opt/homebrew/bin/brew shellenv)"
+    elif [[ -f "/usr/local/bin/brew" ]]; then
+        # Intel Mac
+        eval "$(/usr/local/bin/brew shellenv)"
+    fi
 fi
 
 # Install packages from Brewfile
