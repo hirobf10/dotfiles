@@ -15,7 +15,7 @@ xcode-select --install
 sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply https://github.com/hirobf10/dotfiles.git
 ```
 
-このコマンドはデフォルト値で環境をセットアップします。個人情報を更新するには：
+初回実行時は、一時的にデフォルト値が使用されます。その後、個人情報を設定してください：
 ```bash
 chezmoi edit-config  # 名前、メールアドレスを設定
 chezmoi apply        # 変更を適用
