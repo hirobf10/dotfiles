@@ -1,1 +1,8 @@
 .serena
+
+# IDE settings
+.vscode/
+
+# Python
+*.pyc
+__pycache__/
