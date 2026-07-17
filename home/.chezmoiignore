@@ -28,6 +28,10 @@
 .claude/telemetry
 .claude/usage-data
 
-# Codex CLI のローカル状態・秘密（AGENTS.md / config.toml のみ管理）
+# dot_config 配下のスタッシュ（symlink 参照用の実体。~/.config へは適用しない）
+.config/claude
+.config/codex
+
+# Codex CLI のローカル状態・秘密（AGENTS.md のみ管理）
 .codex/*
 !.codex/AGENTS.md
