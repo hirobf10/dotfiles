@@ -29,6 +29,7 @@ brew "chezmoi"
 brew "mkcert"
 
 # Applications
+cask "cmux"
 cask "visual-studio-code"
 cask "docker"
 cask "slack"

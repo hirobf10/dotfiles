@@ -39,6 +39,11 @@ chezmoi apply                # 変更適用
 chezmoi cd                   # ソースディレクトリへ移動
 ```
 
+## リポジトリ構成
+
+- `.chezmoiroot` により、適用対象のソースは `home/` 配下（リポジトリ直下は README・CI 等のメタ領域）
+- `home/dot_config/{claude,codex}/` は適用されない実体置き場（`.chezmoiignore` で除外）。`~/.claude/*` と `~/.codex/AGENTS.md` はここへの **symlink** として適用されるため、実ファイルの編集がそのままソース編集になりドリフトしない
+
 ## 管理ファイル
 
 ### シェル・Git
@@ -47,13 +52,9 @@ chezmoi cd                   # ソースディレクトリへ移動
 - `.gitconfig` - Git設定
 - `.gitexclude` - グローバル git 除外
 
-### AI ツール
+### AI ツール（symlink 管理）
 - `.claude/CLAUDE.md` - 開発設定
 - `.claude/settings.json` - Claude Code 設定（権限・フック・プラグイン）
 - `.claude/hooks/` - Claude Code フック
-- `.claude/skills/` - スキル（`.agents/skills` への symlink）
-- `.agents/skills/` - AI ツール共有スキルの実体
-- `.codex/AGENTS.md`, `.codex/config.toml` - Codex 設定
-
-### エディタ
-- `Library/Application Support/Code/User/settings.json`, `keybindings.json` - VSCode 設定
+- `.claude/rules/` - Claude Code ルール
+- `.codex/AGENTS.md` - Codex 開発設定
