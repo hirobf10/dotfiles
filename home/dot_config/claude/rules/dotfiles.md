@@ -6,7 +6,8 @@
 
 ファイルにより2方式ある：
 
-- **symlink 管理**（`~/.claude/CLAUDE.md`・`settings.json`・`hooks/`・`rules/`、`~/.codex/AGENTS.md`）: 実体はソースの `home/dot_config/{claude,codex}/` にあり、実ファイルはそこへの symlink。**直接編集してよい**（編集＝ソース編集でドリフトしない）。編集後はソースリポジトリでコミット・push する
+- **symlink 管理**（`~/.claude/CLAUDE.md`・`settings.json`・`hooks/`・`rules/`、`~/.codex/AGENTS.md`）: 実体はソースの `home/dot_config/{agents,claude,codex}/` にあり、実ファイルはそこへの symlink。**直接編集してよい**（編集＝ソース編集でドリフトしない）。編集後はソースリポジトリでコミット・push する
+- `~/.claude/CLAUDE.md` と `~/.codex/AGENTS.md` は**同一の共有ファイル** `home/dot_config/agents/AGENTS.md` を指す。内容はツール中立に書く。Claude 固有の指示は `~/.claude/rules/` へ
 - **コピー/テンプレート管理**（`.zshrc`・`.gitconfig`・`.gitexclude`・`.zprofile`・`Brewfile` 等）: `chezmoi edit <target>` でソースを編集し `chezmoi apply`。実ファイルを直接編集した場合は `chezmoi re-add <target>` で取り込む
 
 注意: `~/.claude/settings.json` が symlink でなく通常ファイルになっていたら、何らかのツールが symlink を置換した状態。内容をソースへ反映してから `chezmoi apply` で symlink に戻す。

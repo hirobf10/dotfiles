@@ -53,8 +53,7 @@ chezmoi cd                   # ソースディレクトリへ移動
 - `.gitexclude` - グローバル git 除外
 
 ### AI ツール（symlink 管理）
-- `.claude/CLAUDE.md` - 開発設定
+- `.claude/CLAUDE.md`, `.codex/AGENTS.md` - 開発設定（`dot_config/agents/AGENTS.md` を共有する同一ファイル）
 - `.claude/settings.json` - Claude Code 設定（権限・フック・プラグイン）
 - `.claude/hooks/` - Claude Code フック
-- `.claude/rules/` - Claude Code ルール
-- `.codex/AGENTS.md` - Codex 開発設定
+- `.claude/rules/` - Claude Code ルール（Claude 固有の指示はこちら）

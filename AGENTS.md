@@ -5,7 +5,8 @@
 ## リポジトリ構成
 
 - [chezmoi](https://www.chezmoi.io/) で管理する dotfiles リポジトリ。`.chezmoiroot` により **`home/` 配下だけが適用対象のソース**。リポジトリ直下は README・CI・本ファイル等のメタ領域
-- `home/dot_config/claude/` と `home/dot_config/codex/` は適用されないスタッシュ（`.chezmoiignore` で除外）。実行時パス（`~/.claude/*`、`~/.codex/AGENTS.md`）はここへの symlink として適用される
+- `home/dot_config/{agents,claude,codex}/` は適用されないスタッシュ（`.chezmoiignore` で除外）。実行時パス（`~/.claude/*`、`~/.codex/AGENTS.md`）はここへの symlink として適用される
+- `dot_config/agents/AGENTS.md` はツール共有の指示ファイル（`~/.claude/CLAUDE.md` と `~/.codex/AGENTS.md` の両方がこれを指す）。内容はツール中立に保ち、Claude 固有の指示は `dot_config/claude/rules/` に置く
 - symlink 経由の実ファイル編集はそのままソース編集になる（ドリフトしない）。コピー適用されるファイル（`.zshrc`、`.gitconfig` 等のテンプレート）は `chezmoi edit` で編集し、直接編集した場合は `chezmoi re-add` で取り込む
 
 ## 秘密・個人情報を載せない

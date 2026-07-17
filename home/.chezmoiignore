@@ -29,6 +29,7 @@
 .claude/usage-data
 
 # dot_config 配下のスタッシュ（symlink 参照用の実体。~/.config へは適用しない）
+.config/agents
 .config/claude
 .config/codex
 
