@@ -1,11 +1,22 @@
-.serena
+# macOS
+.DS_Store
+._*
 
 # IDE settings
 .vscode/
+.idea/
 
 # Python
 *.pyc
 __pycache__/
+
+# mise (personal per-project overrides)
+.mise.toml
+.mise.local.toml
+mise.local.toml
+
+# Tools
+.serena
 
 # Claude Code
 **/.claude/settings.local.json
