@@ -4,6 +4,11 @@
 [core]
 	symlinks = true
 	excludesfile = ~/.gitexclude
+	pager = delta
+[interactive]
+	diffFilter = delta --color-only
+[delta]
+	navigate = true
 [push]
 	autoSetupRemote = true
 [ghq]

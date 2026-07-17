@@ -1,5 +1,7 @@
 # Dotfiles
 
+[![Validate Dotfiles](https://github.com/hirobf10/dotfiles/actions/workflows/validate.yml/badge.svg)](https://github.com/hirobf10/dotfiles/actions/workflows/validate.yml)
+
 chezmoiを使用したdotfiles管理リポジトリ
 
 > **注意**: このリポジトリは public です。認証トークン・API キー等の秘密情報や、マシン固有の絶対パス・ローカルの trust 情報などの個人環境情報は含めないでください。新たにファイルを管理対象へ加える際は中身を確認すること。

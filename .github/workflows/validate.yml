@@ -6,6 +6,8 @@ on:
     paths-ignore:
       - '**.md'
       - 'home/.chezmoiignore'
+  schedule:
+    - cron: '0 0 * * 1'  # Weekly bit-rot check (Mon 09:00 JST)
   workflow_dispatch:
 
 concurrency:
@@ -75,3 +77,9 @@ jobs:
         fi
 
         exit "$failed"
+
+    - name: Idempotency
+      run: |
+        # The applied state must exactly match the source, with nothing pending
+        chezmoi verify
+        [ -z "$(chezmoi status)" ]
