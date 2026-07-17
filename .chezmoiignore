@@ -1,1 +1,36 @@
 README.md
+
+# Claude Code のローカル状態・キャッシュ・秘密（管理対象外）
+.claude.json
+.claude.json.backup
+.claude/.last-*
+.claude/daemon*
+.claude/*.log
+.claude/*.lock
+.claude/history.jsonl
+.claude/*-cache.json
+.claude/policy-limits.json
+.claude/remote-settings.json
+.claude/stats-cache.json
+.claude/backups
+.claude/cache
+.claude/chrome
+.claude/debug
+.claude/file-history
+.claude/ide
+.claude/image-cache
+.claude/jobs
+.claude/paste-cache
+.claude/plugins
+.claude/projects
+.claude/session-env
+.claude/sessions
+.claude/shell-snapshots
+.claude/tasks
+.claude/telemetry
+.claude/usage-data
+
+# Codex CLI のローカル状態・秘密（AGENTS.md / config.toml のみ管理）
+.codex/*
+!.codex/AGENTS.md
+!.codex/config.toml
