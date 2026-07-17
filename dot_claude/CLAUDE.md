@@ -61,12 +61,6 @@
   - 調査・質問への回答のみでファイル編集がない場合
   - ドキュメントや設定の軽微な単発修正
 
-## dotfiles 管理（chezmoi）
-
-- dotfiles（chezmoi 管理下のファイル）の変更は `chezmoi edit <target>` または `chezmoi cd` でソースを編集して行い、実ファイルの直接編集を避ける
-- 実ファイルを直接編集してしまった場合は `chezmoi re-add <target>` でソースへ取り込む（ドリフト防止）
-- ソースは `~/.local/share/chezmoi`（リポジトリ hirobf10/dotfiles）
-
 ## CLAUDE.md更新方針
 
 - 同じ指摘を何度も受ける場合のみ更新を検討
