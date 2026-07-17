@@ -18,12 +18,13 @@ jobs:
       fail-fast: false
       matrix:
         os: [macos-14, macos-15, macos-26]
+        environment: [work, personal]
     runs-on: ${{ matrix.os }}
     steps:
     - name: Test one-liner setup
       run: |
         # Run the one-liner command
-        sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply --promptString "Git email address=test@example.com" --promptString "Git user name=test" --promptString "Environment (work/personal)=work" hirobf10
+        sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply --promptString "Git email address=test@example.com" --promptString "Git user name=test" --promptString "Environment (work/personal)=${{ matrix.environment }}" hirobf10
     
     - name: Verify
       run: |
@@ -53,13 +54,20 @@ jobs:
         check 'mise which node' "node via mise"
         check 'mise which terraform' "terraform via mise"
 
-        echo -e "\n=== Verifying work tools ==="
-        check 'command -v tkn' "tkn installed"
-        check 'test -x ~/.google-cloud-sdk/bin/gcloud' "gcloud installed"
-        check 'mise which spanner-cli' "spanner-cli via mise"
+        if [ "${{ matrix.environment }}" = "work" ]; then
+          echo -e "\n=== Verifying work tools ==="
+          check 'command -v tkn' "tkn installed"
+          check 'test -x ~/.google-cloud-sdk/bin/gcloud' "gcloud installed"
+          check 'mise which spanner-cli' "spanner-cli via mise"
+        else
+          echo -e "\n=== Verifying work tools are absent ==="
+          check '! command -v tkn' "tkn not installed"
+          check '! test -x ~/.google-cloud-sdk/bin/gcloud' "gcloud not installed"
+          check '! mise which spanner-cli' "spanner-cli not managed"
+        fi
 
         echo -e "\n=== Verifying Brewfile is fully satisfied ==="
-        if brew bundle check --verbose --file ~/.local/share/chezmoi/home/Brewfile; then
+        if brew bundle check --verbose --file ~/Brewfile; then
           echo "✅ brew bundle check"
         else
           echo "❌ brew bundle check"
