@@ -31,7 +31,7 @@ brew "mkcert"
 # Applications
 cask "cmux"
 cask "visual-studio-code"
-cask "docker"
+cask "docker-desktop"
 cask "slack"
 cask "notion"
 cask "zoom"
