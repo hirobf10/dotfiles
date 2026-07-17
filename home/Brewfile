@@ -43,8 +43,6 @@ cask "spotify"
 # VSCode extensions
 # AI/Completion
 vscode "anthropic.claude-code"
-vscode "github.copilot"
-vscode "github.copilot-chat"
 
 # Git
 vscode "github.vscode-github-actions"
@@ -52,10 +50,9 @@ vscode "mhutchie.git-graph"
 
 # Languages & Linters
 vscode "golang.go"
-vscode "charliermarsh.ruff"
 vscode "ms-python.python"
+vscode "charliermarsh.ruff"
 vscode "ms-python.mypy-type-checker"
-vscode "ms-python.isort"
 vscode "redhat.vscode-yaml"
 vscode "timonwong.shellcheck"
 vscode "foxundermoon.shell-format"

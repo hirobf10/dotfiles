@@ -27,15 +27,35 @@ jobs:
     
     - name: Verify
       run: |
+        failed=0
+        check() {
+          if eval "$1" >/dev/null 2>&1; then
+            echo "✅ $2"
+          else
+            echo "❌ $2"
+            failed=1
+          fi
+        }
+
         echo "=== Verifying dotfiles ==="
-        test -f ~/.gitconfig && echo "✅ ~/.gitconfig" || echo "❌ ~/.gitconfig"
-        test -f ~/.zshrc && echo "✅ ~/.zshrc" || echo "❌ ~/.zshrc"
-        
+        check 'test -f ~/.gitconfig' "~/.gitconfig"
+        check 'test -f ~/.zshrc' "~/.zshrc"
+
         echo -e "\n=== Verifying git config ==="
-        grep -q "name = test" ~/.gitconfig && echo "✅ Git user name configured" || echo "❌ Git user name not found"
-        grep -q "email = test@example.com" ~/.gitconfig && echo "✅ Git email configured" || echo "❌ Git email not found"
-        
+        check 'grep -q "name = test" ~/.gitconfig' "Git user name configured"
+        check 'grep -q "email = test@example.com" ~/.gitconfig' "Git email configured"
+
         echo -e "\n=== Verifying tools ==="
-        command -v brew >/dev/null && echo "✅ brew installed" || echo "❌ brew not found"
-        command -v chezmoi >/dev/null && echo "✅ chezmoi installed" || echo "❌ chezmoi not found"
-        command -v anyenv >/dev/null && echo "✅ anyenv installed" || echo "❌ anyenv not found"
+        check 'command -v brew' "brew installed"
+        check 'command -v chezmoi' "chezmoi installed"
+        check 'command -v anyenv' "anyenv installed"
+
+        echo -e "\n=== Verifying Brewfile is fully satisfied ==="
+        if brew bundle check --verbose --file ~/.local/share/chezmoi/home/Brewfile; then
+          echo "✅ brew bundle check"
+        else
+          echo "❌ brew bundle check"
+          failed=1
+        fi
+
+        exit "$failed"
