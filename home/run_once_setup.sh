@@ -66,14 +66,10 @@ fi
 # Setup direnv (already in .zshrc)
 echo "📁 direnv is configured in .zshrc"
 
-# Install Claude Code CLI
+# Install Claude Code CLI (native installer, self-updating)
 if ! command -v claude &>/dev/null; then
     echo "🤖 Installing Claude Code CLI..."
-    if command -v npm &>/dev/null; then
-        npm install -g @anthropic-ai/claude-code
-    else
-        echo "⚠️  npm not found. Install Node.js first, then run: npm install -g @anthropic-ai/claude-code"
-    fi
+    curl -fsSL https://claude.ai/install.sh | bash
 else
     echo "✅ Claude Code CLI is already installed"
 fi

@@ -24,6 +24,9 @@ brew "pre-commit"
 # Development environment
 brew "direnv"
 brew "chezmoi"
+brew "buf"
+brew "pnpm"
+brew "tektoncd-cli"
 
 # Security
 brew "mkcert"
