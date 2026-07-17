@@ -25,7 +25,7 @@ BREWFILE="$SCRIPT_DIR/Brewfile"
 
 if [ ! -f "$BREWFILE" ]; then
     # When run by chezmoi, script is in ~/.local/share/chezmoi
-    BREWFILE="$HOME/.local/share/chezmoi/Brewfile"
+    BREWFILE="$HOME/.local/share/chezmoi/home/Brewfile"
 fi
 
 if [ ! -f "$BREWFILE" ]; then
