@@ -15,17 +15,7 @@ xcode-select --install
 sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply https://github.com/hirobf10/dotfiles.git
 ```
 
-セットアップ後、個人情報を設定してください：
-```bash
-chezmoi edit-config
-chezmoi apply
-```
-
-設定項目：
-- `name`: あなたの名前
-- `environment`: `work` または `personal`
-- `work_email`: 仕事用メールアドレス
-- `personal_email`: 個人用メールアドレス
+初回 init 時に Git の `name` / `email` をプロンプトで設定します。
 
 ## 開発環境セットアップ
 
@@ -49,8 +39,19 @@ chezmoi cd                   # ソースディレクトリへ移動
 
 ## 管理ファイル
 
-- `.gitconfig` - Git設定（環境別メール）
+### シェル・Git
 - `.zshrc` - Zsh設定
 - `.zprofile` - Homebrew初期化
+- `.gitconfig` - Git設定
+- `.gitexclude` - グローバル git 除外
+
+### AI ツール
 - `.claude/CLAUDE.md` - 開発設定
-- `.npmrc` - npm設定
+- `.claude/settings.json` - Claude Code 設定（権限・フック・プラグイン）
+- `.claude/hooks/` - Claude Code フック
+- `.claude/skills/` - スキル（`.agents/skills` への symlink）
+- `.agents/skills/` - AI ツール共有スキルの実体
+- `.codex/AGENTS.md`, `.codex/config.toml` - Codex 設定
+
+### エディタ
+- `Library/Application Support/Code/User/settings.json`, `keybindings.json` - VSCode 設定

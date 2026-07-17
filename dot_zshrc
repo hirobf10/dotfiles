@@ -117,8 +117,9 @@ export PATH="$HOME/bin:$PATH"
 # Local binaries
 export PATH="$HOME/.local/bin:$PATH"
 
-# npm global binaries
-export PATH="$HOME/.npm-global/bin:$PATH"
-
 # google cloud binaries
 export PATH="$HOME/.google-cloud-sdk/bin:$PATH"
+
+# Golang
+export GOPATH=$HOME/go
+export PATH=$PATH:$GOPATH/bin

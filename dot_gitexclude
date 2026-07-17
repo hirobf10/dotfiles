@@ -6,3 +6,6 @@
 # Python
 *.pyc
 __pycache__/
+
+# Claude Code
+**/.claude/settings.local.json
