@@ -7,15 +7,7 @@ echo "🚀 Starting development environment setup..."
 if ! command -v brew &>/dev/null; then
     echo "📦 Installing Homebrew..."
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    
-    # Add Homebrew to PATH based on system architecture
-    if [[ -f "/opt/homebrew/bin/brew" ]]; then
-        # Apple Silicon
-        eval "$(/opt/homebrew/bin/brew shellenv)"
-    elif [[ -f "/usr/local/bin/brew" ]]; then
-        # Intel Mac
-        eval "$(/usr/local/bin/brew shellenv)"
-    fi
+    eval "$(/opt/homebrew/bin/brew shellenv)"
 fi
 
 # Install packages from the rendered Brewfile (applied to ~/Brewfile before scripts run)
@@ -39,10 +31,10 @@ if ! brew bundle --file="$BREWFILE"; then
     fi
 fi
 
-# Install Oh My Zsh if not installed
+# Install Oh My Zsh if not installed (KEEP_ZSHRC prevents it from replacing the managed ~/.zshrc)
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
     echo "🎨 Installing Oh My Zsh..."
-    sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
+    KEEP_ZSHRC=yes sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 fi
 
 # Install global tools declared in ~/.config/mise/config.toml
@@ -67,16 +59,10 @@ fi
 
 {{ if eq .environment "work" -}}
 # Install Google Cloud SDK
-if ! command -v gcloud &>/dev/null; then
+if [ ! -x "$HOME/.google-cloud-sdk/bin/gcloud" ]; then
     echo "☁️  Installing Google Cloud SDK..."
-    
-    # Determine architecture
-    if [[ $(uname -m) == "arm64" ]]; then
-        GCLOUD_ARCHIVE="google-cloud-cli-darwin-arm.tar.gz"
-    else
-        GCLOUD_ARCHIVE="google-cloud-cli-darwin-x86_64.tar.gz"
-    fi
-    
+    GCLOUD_ARCHIVE="google-cloud-cli-darwin-arm.tar.gz"
+
     # Create temporary directory for installation
     TEMP_DIR=$(mktemp -d)
     echo "📁 Using temporary directory: $TEMP_DIR"
