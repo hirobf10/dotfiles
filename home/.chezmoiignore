@@ -9,7 +9,6 @@
 .claude/*-cache.json
 .claude/policy-limits.json
 .claude/remote-settings.json
-.claude/stats-cache.json
 .claude/backups
 .claude/cache
 .claude/chrome
@@ -39,8 +38,6 @@
 .config/mise/conf.d
 {{- end }}
 
-# Codex CLI のローカル状態・秘密（AGENTS.md / hooks / hooks.json のみ管理）
+# Codex CLI のローカル状態・秘密（AGENTS.md のみ管理）
 .codex/*
 !.codex/AGENTS.md
-!.codex/hooks
-!.codex/hooks.json

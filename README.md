@@ -45,7 +45,7 @@ chezmoi cd                   # ソースディレクトリへ移動
 ## リポジトリ構成
 
 - `.chezmoiroot` により、適用対象のソースは `home/` 配下（リポジトリ直下は README・CI 等のメタ領域）
-- `home/dot_config/{agents,claude,codex}/` と `home/dot_mise/` は適用されない実体置き場（`.chezmoiignore` で除外）。`~/.claude/*`・`~/.codex/*`・`~/.config/mise/*` はここへの **symlink** として適用されるため、実ファイルの編集がそのままソース編集になりドリフトしない
+- `home/dot_config/{agents,claude}/` と `home/dot_mise/` は適用されない実体置き場（`.chezmoiignore` で除外）。`~/.claude/*`・`~/.codex/AGENTS.md`・`~/.config/mise/*` はここへの **symlink** として適用されるため、実ファイルの編集がそのままソース編集になりドリフトしない
 - `environment`（work / personal）により Brewfile・setup スクリプト・mise 設定が分岐する
 
 ## 管理ファイル
@@ -60,7 +60,5 @@ chezmoi cd                   # ソースディレクトリへ移動
 
 ### AI ツール（symlink 管理）
 - `.claude/CLAUDE.md`, `.codex/AGENTS.md` - 開発設定（`dot_config/agents/AGENTS.md` を共有する同一ファイル）
-- `.claude/hooks/`, `.codex/hooks/` - フック（`dot_config/agents/hooks/` を共有する同一ディレクトリ）
-- `.claude/settings.json` - Claude Code 設定（権限・フック・プラグイン）
+- `.claude/settings.json` - Claude Code 設定（権限・プラグイン）
 - `.claude/rules/` - Claude Code ルール（Claude 固有の指示はこちら）
-- `.codex/hooks.json` - Codex フック設定

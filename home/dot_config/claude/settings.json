@@ -106,26 +106,17 @@
       "mcp__claude_ai_Slack__slack_send_message_draft",
       "mcp__claude_ai_Slack__slack_create_canvas"
     ],
+    "deny": [
+      "Bash(find * -exec*)",
+      "Bash(find * -execdir*)",
+      "Bash(find * -delete*)"
+    ],
     "additionalDirectories": [
       "~/.claude",
       "~/.local/share/chezmoi"
     ]
   },
   "model": "claude-fable-5[1m]",
-  "hooks": {
-    "PreToolUse": [
-      {
-        "matcher": "Bash",
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.claude/hooks/pipe-stage-permissions.sh",
-            "timeout": 5
-          }
-        ]
-      }
-    ]
-  },
   "enabledPlugins": {
     "gopls-lsp@claude-plugins-official": true,
     "figma@claude-plugins-official": true,
