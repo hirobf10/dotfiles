@@ -123,3 +123,9 @@ export PATH="$HOME/.google-cloud-sdk/bin:$PATH"
 # Golang
 export GOPATH=$HOME/go
 export PATH=$PATH:$GOPATH/bin
+
+# ghq + fzf: jump to a repository
+gq() {
+  local dir
+  dir=$(ghq list -p | fzf --height 40% --reverse) && cd "$dir"
+}
