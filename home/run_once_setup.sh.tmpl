@@ -18,15 +18,9 @@ if ! command -v brew &>/dev/null; then
     fi
 fi
 
-# Install packages from Brewfile
+# Install packages from the rendered Brewfile (applied to ~/Brewfile before scripts run)
 echo "📦 Installing Homebrew packages..."
-SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
-BREWFILE="$SCRIPT_DIR/Brewfile"
-
-if [ ! -f "$BREWFILE" ]; then
-    # When run by chezmoi, script is in ~/.local/share/chezmoi
-    BREWFILE="$HOME/.local/share/chezmoi/home/Brewfile"
-fi
+BREWFILE="$HOME/Brewfile"
 
 if [ ! -f "$BREWFILE" ]; then
     echo "No Brewfile found"
@@ -74,6 +68,7 @@ else
     echo "✅ Claude Code CLI is already installed"
 fi
 
+{{ if eq .environment "work" -}}
 # Install Google Cloud SDK
 if ! command -v gcloud &>/dev/null; then
     echo "☁️  Installing Google Cloud SDK..."
@@ -124,6 +119,7 @@ if ! command -v gcloud &>/dev/null; then
 else
     echo "✅ Google Cloud SDK is already installed"
 fi
+{{- end }}
 
 echo "✅ Development environment setup complete!"
 echo "Please restart your terminal or run: source ~/.zshrc"

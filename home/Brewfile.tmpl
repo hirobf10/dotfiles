@@ -6,10 +6,6 @@ brew "git-secret"
 # Development tools
 brew "mise"
 
-# Container & Kubernetes
-brew "kind"
-brew "kubernetes-cli"
-
 # Utilities
 brew "jq"
 brew "bat"
@@ -24,10 +20,6 @@ brew "pre-commit"
 # Development environment
 brew "direnv"
 brew "chezmoi"
-brew "buf"
-brew "cue"
-brew "pnpm"
-brew "tektoncd-cli"
 
 # Security
 brew "mkcert"
@@ -43,3 +35,17 @@ cask "google-chrome"
 cask "figma"
 cask "discord"
 cask "spotify"
+
+{{ if eq .environment "work" -}}
+# Work: Container & Kubernetes
+brew "kind"
+brew "kubernetes-cli"
+brew "tektoncd-cli"
+
+# Work: Protobuf / config tooling
+brew "buf"
+brew "cue"
+
+# Work: frontend
+brew "pnpm"
+{{- end }}

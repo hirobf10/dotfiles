@@ -17,7 +17,8 @@ xcode-select --install
 sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply https://github.com/hirobf10/dotfiles.git
 ```
 
-初回 init 時に Git の `name` / `email` をプロンプトで設定します。
+初回 init 時に Git の `name` / `email` と `environment`（`work` / `personal`）をプロンプトで設定します。
+`environment` が `work` のマシンにだけ、仕事用ツール（gcloud / kubectl / tkn / buf / spanner-cli 等）がインストールされます。
 
 ## 開発環境セットアップ
 

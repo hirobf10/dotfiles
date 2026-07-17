@@ -1,9 +1,11 @@
 {{- $email := promptStringOnce . "email" "Git email address" -}}
 {{- $name := promptStringOnce . "name" "Git user name" -}}
+{{- $environment := promptStringOnce . "environment" "Environment (work/personal)" -}}
 
 [data]
     email = "{{ $email }}"
     name = "{{ $name }}"
+    environment = "{{ $environment }}"
 
 [git]
     autoCommit = true
