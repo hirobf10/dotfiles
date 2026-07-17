@@ -33,4 +33,3 @@ README.md
 # Codex CLI のローカル状態・秘密（AGENTS.md / config.toml のみ管理）
 .codex/*
 !.codex/AGENTS.md
-!.codex/config.toml
