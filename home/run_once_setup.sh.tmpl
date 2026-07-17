@@ -31,7 +31,7 @@ fi
 if ! brew bundle --file="$BREWFILE"; then
     echo "⚠️  Some packages may have had warnings during installation (this is normal for apps like Zoom)"
     # Check if critical tools were installed
-    if command -v mise &>/dev/null && command -v direnv &>/dev/null; then
+    if command -v mise &>/dev/null; then
         echo "✅ Critical tools were installed successfully"
     else
         echo "❌ Critical tools installation failed"
@@ -56,9 +56,6 @@ if ! command -v uv &>/dev/null; then
     echo "🐍 Installing uv..."
     curl -LsSf https://astral.sh/uv/install.sh | sh
 fi
-
-# Setup direnv (already in .zshrc)
-echo "📁 direnv is configured in .zshrc"
 
 # Install Claude Code CLI (native installer, self-updating)
 if ! command -v claude &>/dev/null; then

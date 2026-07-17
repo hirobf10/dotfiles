@@ -101,9 +101,6 @@ source "$ZSH/oh-my-zsh.sh"
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
-# for direnv
-eval "$(direnv hook zsh)"
-
 eval "$(mise activate zsh)"
 
 autoload -U +X bashcompinit && bashcompinit
