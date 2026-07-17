@@ -1,6 +1,6 @@
 {{- $email := promptStringOnce . "email" "Git email address" -}}
 {{- $name := promptStringOnce . "name" "Git user name" -}}
-{{- $environment := promptStringOnce . "environment" "Environment (work/personal)" -}}
+{{- $environment := promptChoiceOnce . "environment" "Environment" (list "work" "personal") -}}
 
 [data]
     email = "{{ $email }}"

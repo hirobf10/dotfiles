@@ -5,7 +5,6 @@ on:
     branches: [ main ]
     paths-ignore:
       - '**.md'
-      - 'home/.chezmoiignore'
   schedule:
     - cron: '0 0 * * 1'  # Weekly bit-rot check (Mon 09:00 JST)
   workflow_dispatch:
@@ -26,7 +25,7 @@ jobs:
     - name: Test one-liner setup
       run: |
         # Run the one-liner command
-        sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply --promptString "Git email address=test@example.com" --promptString "Git user name=test" --promptString "Environment (work/personal)=${{ matrix.environment }}" hirobf10
+        sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply --promptString "Git email address=test@example.com" --promptString "Git user name=test" --promptChoice "Environment=${{ matrix.environment }}" hirobf10
     
     - name: Verify
       run: |
@@ -56,16 +55,23 @@ jobs:
         check 'mise which node' "node via mise"
         check 'mise which terraform' "terraform via mise"
 
+        echo -e "\n=== Verifying symlinks ==="
+        for link in ~/.claude/CLAUDE.md ~/.claude/settings.json ~/.claude/rules ~/.codex/AGENTS.md ~/.config/mise/config.toml; do
+          check "test -L $link && test -e $link" "symlink $link"
+        done
+
         if [ "${{ matrix.environment }}" = "work" ]; then
           echo -e "\n=== Verifying work tools ==="
           check 'command -v tkn' "tkn installed"
           check 'test -x ~/.google-cloud-sdk/bin/gcloud' "gcloud installed"
           check 'mise which spanner-cli' "spanner-cli via mise"
+          check 'test -L ~/.config/mise/conf.d/work.toml && test -e ~/.config/mise/conf.d/work.toml' "symlink work.toml"
         else
           echo -e "\n=== Verifying work tools are absent ==="
           check '! command -v tkn' "tkn not installed"
           check '! test -x ~/.google-cloud-sdk/bin/gcloud' "gcloud not installed"
           check '! mise which spanner-cli' "spanner-cli not managed"
+          check '! test -e ~/.config/mise/conf.d/work.toml' "work.toml not applied"
         fi
 
         echo -e "\n=== Verifying Brewfile is fully satisfied ==="
@@ -81,5 +87,14 @@ jobs:
     - name: Idempotency
       run: |
         # The applied state must exactly match the source, with nothing pending
-        chezmoi verify
-        [ -z "$(chezmoi status)" ]
+        if ! chezmoi verify; then
+          echo "chezmoi verify failed; differing targets:"
+          chezmoi status
+          exit 1
+        fi
+        status=$(chezmoi status)
+        if [ -n "$status" ]; then
+          echo "chezmoi status is not empty:"
+          echo "$status"
+          exit 1
+        fi
