@@ -37,7 +37,7 @@ fi
 if ! brew bundle --file="$BREWFILE"; then
     echo "⚠️  Some packages may have had warnings during installation (this is normal for apps like Zoom)"
     # Check if critical tools were installed
-    if command -v anyenv &>/dev/null && command -v direnv &>/dev/null; then
+    if command -v mise &>/dev/null && command -v direnv &>/dev/null; then
         echo "✅ Critical tools were installed successfully"
     else
         echo "❌ Critical tools installation failed"

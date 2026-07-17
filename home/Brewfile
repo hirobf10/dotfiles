@@ -25,6 +25,7 @@ brew "pre-commit"
 brew "direnv"
 brew "chezmoi"
 brew "buf"
+brew "cue"
 brew "pnpm"
 brew "tektoncd-cli"
 
