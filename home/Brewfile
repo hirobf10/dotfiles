@@ -4,7 +4,7 @@ brew "git-lfs"
 brew "git-secret"
 
 # Development tools
-brew "anyenv"
+brew "mise"
 
 # Container & Kubernetes
 brew "kind"

@@ -28,10 +28,11 @@
 .claude/telemetry
 .claude/usage-data
 
-# dot_config 配下のスタッシュ（symlink 参照用の実体。~/.config へは適用しない）
+# symlink 参照用のスタッシュ（実体。この target パスへは適用しない）
 .config/agents
 .config/claude
 .config/codex
+.mise
 
 # Codex CLI のローカル状態・秘密（AGENTS.md のみ管理）
 .codex/*

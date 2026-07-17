@@ -1,0 +1,6 @@
+[tools]
+node = "22"
+terraform = "1.15"
+
+[settings]
+idiomatic_version_file_enable_tools = ["node", "terraform"]

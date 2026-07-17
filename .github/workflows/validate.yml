@@ -48,7 +48,10 @@ jobs:
         echo -e "\n=== Verifying tools ==="
         check 'command -v brew' "brew installed"
         check 'command -v chezmoi' "chezmoi installed"
-        check 'command -v anyenv' "anyenv installed"
+        check 'command -v mise' "mise installed"
+        check 'test -x ~/.local/bin/uv' "uv installed"
+        check 'mise which node' "node via mise"
+        check 'mise which terraform' "terraform via mise"
 
         echo -e "\n=== Verifying Brewfile is fully satisfied ==="
         if brew bundle check --verbose --file ~/.local/share/chezmoi/home/Brewfile; then

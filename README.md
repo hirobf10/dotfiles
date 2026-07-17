@@ -25,9 +25,8 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply https://github.com/hirobf10
 
 自動インストール内容：
 - Homebrew、Oh My Zsh
-- anyenv（pyenv、nodenv、tfenv）
-- Python 3.12、Node.js LTS、Terraform最新版
-- VSCode拡張機能（`brew bundle`経由）
+- mise（Node.js、Terraform — `.config/mise/config.toml` で宣言）
+- uv（Python 管理）
 - その他開発ツール（詳細は`Brewfile`参照）
 
 ## 基本操作
@@ -46,11 +45,12 @@ chezmoi cd                   # ソースディレクトリへ移動
 
 ## 管理ファイル
 
-### シェル・Git
+### シェル・Git・開発環境
 - `.zshrc` - Zsh設定
 - `.zprofile` - Homebrew初期化
 - `.gitconfig` - Git設定
 - `.gitexclude` - グローバル git 除外
+- `.config/mise/config.toml` - mise global ツール（symlink 管理）
 
 ### AI ツール（symlink 管理）
 - `.claude/CLAUDE.md`, `.codex/AGENTS.md` - 開発設定（`dot_config/agents/AGENTS.md` を共有する同一ファイル）

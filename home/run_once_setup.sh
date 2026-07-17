@@ -51,103 +51,16 @@ if [ ! -d "$HOME/.oh-my-zsh" ]; then
     sh -c "$(curl -fsSL https://raw.github.com/ohmyzsh/ohmyzsh/master/tools/install.sh)" "" --unattended
 fi
 
-# Setup pyenv
-if command -v pyenv &>/dev/null; then
-    echo "🐍 Setting up Python with pyenv..."
-    # Set PYENV_ROOT if not already set
-    export PYENV_ROOT="$HOME/.pyenv"
-    export PATH="$PYENV_ROOT/bin:$PATH"
+# Install global tools declared in ~/.config/mise/config.toml
+if command -v mise &>/dev/null; then
+    echo "📦 Installing global tools with mise..."
+    mise install
 fi
 
-# Setup anyenv
-if command -v anyenv &>/dev/null; then
-    echo "📦 Initializing anyenv..."
-    # Initialize anyenv
-    eval "$(anyenv init -)"
-    
-    # Install anyenv-install plugin
-    if [ ! -d "$HOME/.config/anyenv/anyenv-install" ]; then
-        echo "📥 Installing anyenv-install plugin..."
-        git clone https://github.com/anyenv/anyenv-install.git "$HOME/.config/anyenv/anyenv-install"
-    fi
-    
-    # Check if anyenv is properly initialized
-    if anyenv versions &>/dev/null; then
-        # Install nodenv if not already installed
-        if ! anyenv versions | grep -q nodenv; then
-            echo "🟢 Installing nodenv via anyenv..."
-            anyenv install nodenv
-            eval "$(anyenv init -)"
-        fi
-
-        # Install pyenv if not already installed
-        if ! anyenv versions | grep -q pyenv; then
-            echo "🐍 Installing pyenv via anyenv..."
-            anyenv install pyenv
-            eval "$(anyenv init -)"
-        fi
-        
-        # Install tfenv if not already installed
-        if ! anyenv versions | grep -q tfenv; then
-            echo "🔧 Installing tfenv via anyenv..."
-            anyenv install tfenv
-            eval "$(anyenv init -)"
-        fi
-        
-        # Install Python via pyenv
-        if command -v pyenv &>/dev/null; then
-            echo "🐍 Installing latest Python 3.12..."
-            # Get latest Python 3.12 version
-            LATEST_PYTHON_312=$(pyenv install --list | grep -E "^\s*3\.12\.[0-9]+$" | tail -1 | xargs)
-            if [ -n "$LATEST_PYTHON_312" ]; then
-                echo "📦 Installing Python $LATEST_PYTHON_312..."
-                pyenv install -s "$LATEST_PYTHON_312"
-                pyenv global "$LATEST_PYTHON_312"
-                eval "$(pyenv init -)"
-            else
-                echo "⚠️  Could not find Python 3.12 version. Installing 3.12.0..."
-                pyenv install -s 3.12.0
-                pyenv global 3.12.0
-                eval "$(pyenv init -)"
-            fi
-        fi
-        
-        # Install Node.js via nodenv
-        if command -v nodenv &>/dev/null; then
-            echo "🟢 Installing latest Node.js LTS..."
-            # Get latest LTS version (even numbered major versions)
-            LATEST_NODE_LTS=$(nodenv install --list | grep -E "^\s*[0-9]+\.[0-9]+\.[0-9]+$" | grep -E "^\s*(18|20|22)\." | tail -1 | xargs)
-            if [ -n "$LATEST_NODE_LTS" ]; then
-                echo "📦 Installing Node.js $LATEST_NODE_LTS..."
-                nodenv install -s "$LATEST_NODE_LTS"
-                nodenv global "$LATEST_NODE_LTS"
-                eval "$(nodenv init -)"
-            else
-                echo "⚠️  Could not find Node.js LTS version. Installing 20.11.0..."
-                nodenv install -s 20.11.0
-                nodenv global 20.11.0
-                eval "$(nodenv init -)"
-            fi
-        fi
-        
-        # Install Terraform via tfenv
-        if command -v tfenv &>/dev/null; then
-            echo "🔧 Installing latest Terraform..."
-            # Get latest stable version
-            LATEST_TERRAFORM=$(tfenv list-remote | grep -E "^[0-9]+\.[0-9]+\.[0-9]+$" | head -1)
-            if [ -n "$LATEST_TERRAFORM" ]; then
-                echo "📦 Installing Terraform $LATEST_TERRAFORM..."
-                tfenv install "$LATEST_TERRAFORM"
-                tfenv use "$LATEST_TERRAFORM"
-            else
-                echo "⚠️  Could not find Terraform version. Installing 1.7.0..."
-                tfenv install 1.7.0
-                tfenv use 1.7.0
-            fi
-        fi
-    else
-        echo "⚠️  anyenv is not fully initialized. Run 'anyenv install --init' manually."
-    fi
+# Install uv (manages Python versions)
+if ! command -v uv &>/dev/null; then
+    echo "🐍 Installing uv..."
+    curl -LsSf https://astral.sh/uv/install.sh | sh
 fi
 
 # Setup direnv (already in .zshrc)
