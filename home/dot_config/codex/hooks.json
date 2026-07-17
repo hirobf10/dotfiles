@@ -11,17 +11,6 @@
           }
         ]
       }
-    ],
-    "PreCompact": [
-      {
-        "hooks": [
-          {
-            "type": "command",
-            "command": "~/.codex/hooks/summarize-session-before-compact.sh",
-            "timeout": 120
-          }
-        ]
-      }
     ]
   }
 }
