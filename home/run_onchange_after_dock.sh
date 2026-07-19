@@ -4,7 +4,13 @@
 
 set -eu
 
-command -v dockutil >/dev/null 2>&1 || exit 0
+# Runs standalone from any shell: brew's bin is not on bash's default PATH
+export PATH="/opt/homebrew/bin:$PATH"
+
+if ! command -v dockutil >/dev/null 2>&1; then
+    echo "⚠️  dockutil not found; skipping Dock layout (brew install dockutil)" >&2
+    exit 0
+fi
 
 echo "📌 Applying Dock layout..."
 dockutil --no-restart --remove all >/dev/null

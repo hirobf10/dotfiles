@@ -5,6 +5,9 @@
 
 set -eu
 
+# Runs standalone from any shell: brew's bin is not on bash's default PATH
+export PATH="/opt/homebrew/bin:$PATH"
+
 echo "🍎 Applying macOS defaults..."
 
 # Input sources: US (ABC) layout + Japanese romaji input.
