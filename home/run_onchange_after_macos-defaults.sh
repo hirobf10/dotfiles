@@ -41,6 +41,30 @@ defaults write com.apple.screencapture disable-shadow -bool true
 defaults write -g AppleShowAllExtensions -bool true
 defaults write com.apple.finder ShowPathbar -bool true
 
-killall Finder SystemUIServer 2>/dev/null || true
+# Text input: no auto-corrections that mangle code
+defaults write -g NSAutomaticCapitalizationEnabled -bool false
+defaults write -g NSAutomaticSpellingCorrectionEnabled -bool false
+defaults write -g NSAutomaticQuoteSubstitutionEnabled -bool false
+defaults write -g NSAutomaticDashSubstitutionEnabled -bool false
+defaults write -g NSAutomaticPeriodSubstitutionEnabled -bool false
+
+# Dock / Spaces: no recent apps, keep Spaces order fixed
+defaults write com.apple.dock show-recents -bool false
+defaults write com.apple.dock mru-spaces -bool false
+
+# Finder QoL: new windows open home, no extension-change warning,
+# no .DS_Store on network/USB volumes
+defaults write com.apple.finder NewWindowTarget -string "PfHm"
+defaults write com.apple.finder NewWindowTargetPath -string "file://${HOME}/"
+defaults write com.apple.finder FXEnableExtensionChangeWarning -bool false
+defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
+defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
+
+# Misc QoL: battery percentage, expanded save dialogs
+defaults write com.apple.controlcenter BatteryShowPercentage -bool true
+defaults write -g NSNavPanelExpandedStateForSaveMode -bool true
+defaults write -g NSNavPanelExpandedStateForSaveMode2 -bool true
+
+killall Dock Finder SystemUIServer ControlCenter 2>/dev/null || true
 
 echo "✅ macOS defaults applied"
