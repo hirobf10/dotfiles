@@ -49,6 +49,14 @@ if ! command -v uv &>/dev/null; then
     curl -LsSf https://astral.sh/uv/install.sh | sh
 fi
 
+# Install the herdr integration for Codex (writes ~/.codex/{herdr-agent-state.sh,hooks.json})
+# The Claude Code side is managed by chezmoi instead: `herdr integration install claude`
+# would write a machine-specific absolute path into the repo-symlinked settings.json.
+if command -v herdr &>/dev/null; then
+    echo "🐑 Installing herdr integration..."
+    herdr integration install codex
+fi
+
 # Install Claude Code CLI (native installer, self-updating)
 if ! command -v claude &>/dev/null; then
     echo "🤖 Installing Claude Code CLI..."

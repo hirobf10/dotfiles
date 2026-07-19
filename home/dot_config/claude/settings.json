@@ -1,5 +1,49 @@
 {
+  "alwaysThinkingEnabled": true,
+  "effortLevel": "xhigh",
+  "enabledPlugins": {
+    "chrome-devtools-mcp@claude-plugins-official": true,
+    "claude-code-setup@claude-plugins-official": true,
+    "context7@claude-plugins-official": true,
+    "figma@claude-plugins-official": true,
+    "gopls-lsp@claude-plugins-official": true,
+    "notion@claude-plugins-official": true,
+    "playwright@claude-plugins-official": true,
+    "plugin-dev@claude-plugins-official": true,
+    "slack@claude-plugins-official": true,
+    "terraform-code-generation@hashicorp": true,
+    "terraform-module-generation@hashicorp": true,
+    "terraform-provider-development@hashicorp": true
+  },
+  "extraKnownMarketplaces": {
+    "hashicorp": {
+      "source": {
+        "repo": "hashicorp/agent-skills",
+        "source": "github"
+      }
+    }
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "command": "bash ~/.claude/hooks/herdr-agent-state.sh session",
+            "timeout": 10,
+            "type": "command"
+          }
+        ],
+        "matcher": "*"
+      }
+    ]
+  },
+  "language": "Japanese",
+  "model": "claude-fable-5[1m]",
   "permissions": {
+    "additionalDirectories": [
+      "~/.claude",
+      "~/.local/share/chezmoi"
+    ],
     "allow": [
       "Bash(cd *)",
       "Bash(ls *)",
@@ -110,41 +154,11 @@
       "Bash(find * -exec*)",
       "Bash(find * -execdir*)",
       "Bash(find * -delete*)"
-    ],
-    "additionalDirectories": [
-      "~/.claude",
-      "~/.local/share/chezmoi"
     ]
   },
-  "model": "claude-fable-5[1m]",
-  "enabledPlugins": {
-    "gopls-lsp@claude-plugins-official": true,
-    "figma@claude-plugins-official": true,
-    "chrome-devtools-mcp@claude-plugins-official": true,
-    "context7@claude-plugins-official": true,
-    "notion@claude-plugins-official": true,
-    "playwright@claude-plugins-official": true,
-    "terraform-code-generation@hashicorp": true,
-    "terraform-module-generation@hashicorp": true,
-    "terraform-provider-development@hashicorp": true,
-    "slack@claude-plugins-official": true,
-    "plugin-dev@claude-plugins-official": true,
-    "claude-code-setup@claude-plugins-official": true
-  },
-  "extraKnownMarketplaces": {
-    "hashicorp": {
-      "source": {
-        "source": "github",
-        "repo": "hashicorp/agent-skills"
-      }
-    }
-  },
-  "language": "Japanese",
-  "alwaysThinkingEnabled": true,
-  "effortLevel": "xhigh",
-  "tui": "fullscreen",
-  "theme": "dark",
-  "verbose": true,
   "remoteControlAtStartup": true,
+  "theme": "dark",
+  "tui": "fullscreen",
+  "verbose": true,
   "voiceEnabled": true
 }
