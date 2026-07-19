@@ -19,8 +19,9 @@ if [ ! -f "$BREWFILE" ]; then
     exit 1
 fi
 
-# Run brew bundle with error handling for known issues
-if ! brew bundle --file="$BREWFILE"; then
+# Install missing packages only; upgrades are a deliberate `brew upgrade`,
+# so a setup.sh edit never triggers multi-GB cask re-downloads.
+if ! brew bundle --no-upgrade --file="$BREWFILE"; then
     echo "⚠️  Some packages may have had warnings during installation (this is normal for apps like Zoom)"
     # Check if critical tools were installed
     if command -v mise &>/dev/null; then
@@ -55,6 +56,12 @@ fi
 if command -v herdr &>/dev/null; then
     echo "🐑 Installing herdr integration..."
     herdr integration install codex
+fi
+
+# Install App Store apps (requires App Store sign-in; skipped otherwise)
+if command -v mas &>/dev/null; then
+    echo "📚 Installing App Store apps..."
+    mas install 302584613 || echo "⚠️  Skipped Kindle (sign in to the App Store and re-run: mas install 302584613)"
 fi
 
 # Install Claude Code CLI (native installer, self-updating)
