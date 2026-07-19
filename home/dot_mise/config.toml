@@ -1,9 +1,9 @@
 [tools]
-go = "1.24"
-node = "22"
-terraform = "1.15"
+go = "latest"
+node = "lts"
+terraform = "latest"
 "go:github.com/cloudspannerecosystem/spanner-cli" = "latest"
 "go:github.com/cloudspannerecosystem/wrench" = "latest"
 
 [settings]
-idiomatic_version_file_enable_tools = ["node", "terraform"]
+idiomatic_version_file_enable_tools = ["go", "node", "terraform"]
