@@ -51,6 +51,7 @@ cask "google-gemini"
 cask "antigravity"
 
 # Applications
+cask "ghostty"
 cask "cmux"
 cask "visual-studio-code"
 cask "docker-desktop"
