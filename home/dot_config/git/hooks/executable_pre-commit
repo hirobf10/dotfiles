@@ -1,0 +1,19 @@
+#!/bin/sh
+# Global pre-commit hook (core.hooksPath): scan staged changes for secrets.
+# Bypass intentionally with: git commit --no-verify
+
+if command -v gitleaks >/dev/null 2>&1; then
+    if ! gitleaks git --pre-commit --staged --redact --no-banner --log-level warn; then
+        echo "" >&2
+        echo "gitleaks: potential secret in staged changes (bypass: git commit --no-verify)" >&2
+        exit 1
+    fi
+fi
+
+# Chain to the repository's own hook (pre-commit framework, husky, etc.).
+# Resolve via --git-dir, NOT --git-path hooks/...: the latter follows
+# core.hooksPath back to this very script and recurses forever.
+repo_hook="$(git rev-parse --git-dir)/hooks/pre-commit"
+if [ -x "$repo_hook" ]; then
+    exec "$repo_hook" "$@"
+fi
