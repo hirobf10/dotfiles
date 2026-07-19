@@ -32,6 +32,24 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply https://github.com/hirobf10
 - Claude Code CLI（公式インストーラ）、gcloud
 - その他開発ツール（詳細は`home/Brewfile`参照）
 
+## セットアップ後の手動手順
+
+apply 完了後に残るのは認証・サインイン系のみ：
+
+1. **一度ログアウト → ログイン** — キーリピート・入力ソース等の defaults を反映させる
+2. **CLI 認証**
+   ```bash
+   gh auth login          # 最優先：git の credential helper が gh 依存
+   gcloud auth login      # 必要なら gcloud auth application-default login も
+   claude                 # 初回起動でログイン
+   ```
+3. **GUI アプリのサインイン**
+   - Chrome（既定ブラウザの確認ダイアログを承認。見逃したら `defaultbrowser chrome`）
+   - VSCode → Settings Sync にサインイン（設定・拡張はここで同期される）
+   - App Store にサインイン → `mas install 302584613`（Kindle）
+   - その他各アプリ
+4. **SSH 鍵**（必要な場合のみ） — GitHub は https + gh helper で動くため、鍵が必要なシステムがある場合だけ `ssh-keygen -t ed25519` で生成・登録
+
 ## 基本操作
 
 ```bash
