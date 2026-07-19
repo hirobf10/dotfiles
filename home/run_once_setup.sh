@@ -58,10 +58,13 @@ if command -v herdr &>/dev/null; then
     herdr integration install codex
 fi
 
-# Install App Store apps (requires App Store sign-in; skipped otherwise)
-if command -v mas &>/dev/null; then
+# Install App Store apps. Skipped in CI: runners cannot sign in and
+# mas install hangs instead of failing fast.
+if command -v mas &>/dev/null && [ -z "${CI:-}" ]; then
     echo "📚 Installing App Store apps..."
-    mas install 302584613 || echo "⚠️  Skipped Kindle (sign in to the App Store and re-run: mas install 302584613)"
+    mas list | grep -q "^302584613" \
+        || mas install 302584613 \
+        || echo "⚠️  Skipped Kindle (sign in to the App Store and re-run: mas install 302584613)"
 fi
 
 # Install Claude Code CLI (native installer, self-updating)
