@@ -26,4 +26,21 @@ if command -v defaultbrowser >/dev/null 2>&1; then
     defaultbrowser chrome || true
 fi
 
+# Keyboard: fast key repeat (beyond the GUI maximum), no accent popup on hold.
+# Applies to apps started after the next login.
+defaults write -g KeyRepeat -int 2
+defaults write -g InitialKeyRepeat -int 15
+defaults write -g ApplePressAndHoldEnabled -bool false
+
+# Screenshots: dedicated folder, no window shadow
+mkdir -p "$HOME/Screenshots"
+defaults write com.apple.screencapture location -string "$HOME/Screenshots"
+defaults write com.apple.screencapture disable-shadow -bool true
+
+# Finder: show all extensions and the path bar
+defaults write -g AppleShowAllExtensions -bool true
+defaults write com.apple.finder ShowPathbar -bool true
+
+killall Finder SystemUIServer 2>/dev/null || true
+
 echo "✅ macOS defaults applied"
