@@ -1,3 +1,0 @@
-[tools]
-"go:github.com/cloudspannerecosystem/spanner-cli" = "latest"
-"go:github.com/cloudspannerecosystem/wrench" = "latest"

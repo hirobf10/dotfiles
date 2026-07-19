@@ -65,7 +65,6 @@ else
     echo "✅ Claude Code CLI is already installed"
 fi
 
-{{ if eq .environment "work" -}}
 # Install Google Cloud SDK
 if [ ! -x "$HOME/.google-cloud-sdk/bin/gcloud" ]; then
     echo "☁️  Installing Google Cloud SDK..."
@@ -110,7 +109,6 @@ if [ ! -x "$HOME/.google-cloud-sdk/bin/gcloud" ]; then
 else
     echo "✅ Google Cloud SDK is already installed"
 fi
-{{- end }}
 
 echo "✅ Development environment setup complete!"
 echo "Please restart your terminal or run: source ~/.zshrc"

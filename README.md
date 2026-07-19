@@ -19,8 +19,7 @@ xcode-select --install
 sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply https://github.com/hirobf10/dotfiles.git
 ```
 
-初回 init 時に Git の `name` / `email` と `environment`（`work` / `personal`）をプロンプトで設定します。
-`environment` が `work` のマシンにだけ、仕事用ツール（gcloud / kubectl / tkn / buf / spanner-cli 等）がインストールされます。
+初回 init 時に Git の `name` / `email` をプロンプトで設定します。
 
 ## 開発環境セットアップ
 
@@ -28,10 +27,10 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply https://github.com/hirobf10
 
 自動インストール内容：
 - Homebrew、Oh My Zsh
-- mise（Go、Node.js、Terraform — `.config/mise/config.toml` で宣言。work マシンは `conf.d/work.toml` の spanner-cli / wrench も）
+- mise（Go、Node.js、Terraform、spanner-cli、wrench — `.config/mise/config.toml` で宣言）
 - uv（Python 管理）
-- Claude Code CLI（公式インストーラ）、gcloud（work のみ）
-- その他開発ツール（詳細は`home/Brewfile.tmpl`参照）
+- Claude Code CLI（公式インストーラ）、gcloud
+- その他開発ツール（詳細は`home/Brewfile`参照）
 
 ## 基本操作
 
@@ -46,7 +45,6 @@ chezmoi cd                   # ソースディレクトリへ移動
 
 - `.chezmoiroot` により、適用対象のソースは `home/` 配下（リポジトリ直下は README・CI 等のメタ領域）
 - `home/dot_config/{agents,claude}/` と `home/dot_mise/` は適用されない実体置き場（`.chezmoiignore` で除外）。`~/.claude/*`・`~/.codex/AGENTS.md`・`~/.config/mise/*` はここへの **symlink** として適用されるため、実ファイルの編集がそのままソース編集になりドリフトしない
-- `environment`（work / personal）により Brewfile・setup スクリプト・mise 設定が分岐する
 
 ## 管理ファイル
 
@@ -56,7 +54,6 @@ chezmoi cd                   # ソースディレクトリへ移動
 - `.gitconfig` - Git設定
 - `.gitexclude` - グローバル git 除外
 - `.config/mise/config.toml` - mise global ツール（symlink 管理）
-- `.config/mise/conf.d/work.toml` - work 専用の mise ツール（work マシンのみ適用）
 
 ### AI ツール（symlink 管理）
 - `.claude/CLAUDE.md`, `.codex/AGENTS.md` - 開発設定（`dot_config/agents/AGENTS.md` を共有する同一ファイル）

@@ -33,11 +33,6 @@
 .config/codex
 .mise
 
-{{ if ne .environment "work" -}}
-# work マシン以外には適用しない
-.config/mise/conf.d
-{{- end }}
-
 # Codex CLI のローカル状態・秘密（AGENTS.md のみ管理）
 .codex/*
 !.codex/AGENTS.md

@@ -19,13 +19,12 @@ jobs:
       fail-fast: false
       matrix:
         os: [macos-15, macos-26]
-        environment: [work, personal]
     runs-on: ${{ matrix.os }}
     steps:
     - name: Test one-liner setup
       run: |
         # Run the one-liner command
-        sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply --promptString "Git email address=test@example.com" --promptString "Git user name=test" --promptChoice "Environment=${{ matrix.environment }}" hirobf10
+        sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply --promptString "Git email address=test@example.com" --promptString "Git user name=test" hirobf10
     
     - name: Verify
       run: |
@@ -54,25 +53,14 @@ jobs:
         check 'test -x ~/.local/bin/uv' "uv installed"
         check 'mise which node' "node via mise"
         check 'mise which terraform' "terraform via mise"
+        check 'mise which spanner-cli' "spanner-cli via mise"
+        check 'command -v tkn' "tkn installed"
+        check 'test -x ~/.google-cloud-sdk/bin/gcloud' "gcloud installed"
 
         echo -e "\n=== Verifying symlinks ==="
         for link in ~/.claude/CLAUDE.md ~/.claude/settings.json ~/.claude/rules ~/.codex/AGENTS.md ~/.config/mise/config.toml; do
           check "test -L $link && test -e $link" "symlink $link"
         done
-
-        if [ "${{ matrix.environment }}" = "work" ]; then
-          echo -e "\n=== Verifying work tools ==="
-          check 'command -v tkn' "tkn installed"
-          check 'test -x ~/.google-cloud-sdk/bin/gcloud' "gcloud installed"
-          check 'mise which spanner-cli' "spanner-cli via mise"
-          check 'test -L ~/.config/mise/conf.d/work.toml && test -e ~/.config/mise/conf.d/work.toml' "symlink work.toml"
-        else
-          echo -e "\n=== Verifying work tools are absent ==="
-          check '! command -v tkn' "tkn not installed"
-          check '! test -x ~/.google-cloud-sdk/bin/gcloud' "gcloud not installed"
-          check '! mise which spanner-cli' "spanner-cli not managed"
-          check '! test -e ~/.config/mise/conf.d/work.toml' "work.toml not applied"
-        fi
 
         echo -e "\n=== Verifying Brewfile is fully satisfied ==="
         if brew bundle check --verbose --file ~/Brewfile; then
