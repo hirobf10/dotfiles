@@ -1,10 +1,5 @@
 # ユーザー開発設定
 
-## ユーザー情報
-
-- 名前: Hiroyuki Otomo
-- GitHub username: hirobf10
-
 ## ファイル作成・編集の嗜好
 
 - ファイル末尾に必ず改行を追加する
