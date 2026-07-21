@@ -32,6 +32,7 @@
 .config/claude
 .config/codex
 .ghostty
+.herdr
 .mise
 
 # Codex CLI のローカル状態・秘密（AGENTS.md のみ管理）

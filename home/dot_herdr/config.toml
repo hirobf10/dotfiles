@@ -1,0 +1,7 @@
+# herdr configuration (defaults otherwise; see `herdr --default-config`)
+
+# Open the git-aware file viewer (herdr-file-viewer plugin) in a split pane
+[[keys.command]]
+key = "prefix+f"
+type = "shell"
+command = "herdr plugin action invoke open-file-viewer --plugin herdr-file-viewer"

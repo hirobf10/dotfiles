@@ -56,6 +56,10 @@ fi
 if command -v herdr &>/dev/null; then
     echo "🐑 Installing herdr integration..."
     herdr integration install codex
+
+    # Install herdr plugins (keybindings live in ~/.config/herdr/config.toml)
+    herdr plugin list --json 2>/dev/null | grep -q '"herdr-file-viewer"' \
+        || herdr plugin install smarzban/herdr-file-viewer --yes
 fi
 
 # Install App Store apps. Skipped in CI: runners cannot sign in and
