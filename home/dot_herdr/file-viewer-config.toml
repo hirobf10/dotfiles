@@ -1,0 +1,4 @@
+# herdr-file-viewer configuration (see config.example.toml in the plugin root)
+
+# Editor launched by the `e` key (precedence: this > $EDITOR > platform default)
+editor = "code --wait"
