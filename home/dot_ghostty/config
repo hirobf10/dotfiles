@@ -1,0 +1,4 @@
+# 英数字: JetBrains Mono(Ghostty 内蔵デフォルトと同じ)
+# 日本語: ヒラギノ角ゴにフォールバック(未指定だと BIZ UDGothic が拾われるため明示)
+font-family = JetBrains Mono
+font-family = Hiragino Sans
