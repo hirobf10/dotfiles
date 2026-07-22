@@ -12,6 +12,12 @@ command = "herdr plugin action invoke open-file-viewer --plugin herdr-file-viewe
 
 [ui]
 show_agent_labels_on_pane_borders = false
+# 新規タブの名前入力プロンプトを省略(リネームは prefix+shift+t)
+prompt_new_tab_name = false
+
+# Claude Code のペインはターミナルタイトル(作業内容)をサイドバーに表示
+[ui.sidebar.agents.rows_by_agent]
+claude = [["state_icon", "workspace", "tab"], ["terminal_title_stripped"], ["agent"]]
 
 [ui.toast]
 delivery = "herdr"
