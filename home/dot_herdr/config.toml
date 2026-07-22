@@ -9,3 +9,16 @@ switch_workspace = "prefix+shift+1..9"
 key = "prefix+f"
 type = "shell"
 command = "herdr plugin action invoke open-file-viewer --plugin herdr-file-viewer"
+
+[ui]
+show_agent_labels_on_pane_borders = false
+
+[ui.toast]
+delivery = "herdr"
+
+[experimental]
+# prefix モード中は英数入力に自動切替(IME が日本語のままキーが効かない対策)
+switch_ascii_input_source_in_prefix = true
+# エージェントが隠すカーソルを IME 変換位置のために強制表示(claude/codex のペインのみ)
+reveal_hidden_cursor_for_cjk_ime = true
+cjk_ime_agents = ["claude", "codex"]
