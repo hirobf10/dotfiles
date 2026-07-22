@@ -10,6 +10,14 @@ key = "prefix+f"
 type = "shell"
 command = "herdr plugin action invoke open-file-viewer --plugin herdr-file-viewer"
 
+# lazygit をモーダル popup で開く(フォーカス中ペインの cwd のリポジトリ。閉じるとレイアウトは元のまま)
+[[keys.command]]
+key = "prefix+t"
+type = "popup"
+command = "lazygit"
+width = "80%"
+height = "80%"
+
 [ui]
 show_agent_labels_on_pane_borders = false
 # 新規タブの名前入力プロンプトを省略(リネームは prefix+shift+t)

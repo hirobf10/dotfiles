@@ -2,6 +2,7 @@
 brew "gh"
 brew "git-lfs"
 brew "git-secret"
+brew "lazygit"
 
 # Development tools
 brew "mise"
