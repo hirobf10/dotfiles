@@ -18,7 +18,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [macos-15, macos-26]
+        os: [macos-15, macos-26, ubuntu-24.04]
     runs-on: ${{ matrix.os }}
     steps:
     - name: Test one-liner setup
@@ -28,6 +28,10 @@ jobs:
     
     - name: Verify
       run: |
+        # Linux runners have no preinstalled Homebrew; setup.sh installs it to linuxbrew
+        if [ "$RUNNER_OS" = "Linux" ]; then
+          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+        fi
         failed=0
         check() {
           if eval "$1" >/dev/null 2>&1; then
@@ -74,6 +78,9 @@ jobs:
 
     - name: Idempotency
       run: |
+        if [ "$RUNNER_OS" = "Linux" ]; then
+          eval "$(/home/linuxbrew/.linuxbrew/bin/brew shellenv)"
+        fi
         # The applied state must exactly match the source, with nothing pending
         if ! chezmoi verify; then
           echo "chezmoi verify failed; differing targets:"
