@@ -1,0 +1,6 @@
+# shellcheck shell=bash
+# GCP OS Login users can't change their login shell (chsh/usermod fail for
+# virtual NSS-backed accounts), so exec into zsh from the bash login shell instead.
+if [ -z "$ZSH_VERSION" ] && [ -t 1 ] && command -v zsh >/dev/null 2>&1; then
+  exec zsh -l
+fi

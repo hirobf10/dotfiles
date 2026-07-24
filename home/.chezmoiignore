@@ -45,3 +45,8 @@ dock.sh
 macos-defaults.sh
 .config/ghostty
 {{ end }}
+
+{{ if eq .chezmoi.os "darwin" }}
+# Linux 専用（macOS では不要）
+.bash_profile
+{{ end }}
