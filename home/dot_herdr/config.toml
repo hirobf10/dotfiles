@@ -9,12 +9,14 @@ switch_workspace = "prefix+shift+1..9"
 key = "prefix+f"
 type = "shell"
 command = "herdr plugin action invoke open-file-viewer --plugin herdr-file-viewer"
+description = "open file viewer"
 
 # lazygit をモーダル popup で開く(フォーカス中ペインの cwd のリポジトリ。閉じるとレイアウトは元のまま)
 [[keys.command]]
 key = "prefix+t"
 type = "popup"
 command = "lazygit"
+description = "open lazygit"
 width = "80%"
 height = "80%"
 
@@ -23,6 +25,7 @@ height = "80%"
 key = "prefix+shift+o"
 type = "popup"
 command = "sh ~/.config/herdr/scripts/ghq-workspace.sh"
+description = "open ghq repo as workspace"
 width = "60%"
 height = "60%"
 
