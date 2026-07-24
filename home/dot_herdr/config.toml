@@ -18,12 +18,21 @@ command = "lazygit"
 width = "80%"
 height = "80%"
 
+# ghq のリポジトリを fzf で選んで新しいワークスペースで開く
+[[keys.command]]
+key = "prefix+shift+o"
+type = "popup"
+command = "sh ~/.config/herdr/scripts/ghq-workspace.sh"
+width = "60%"
+height = "60%"
+
 [ui]
 show_agent_labels_on_pane_borders = false
 # 新規タブの名前入力プロンプトを省略(リネームは prefix+shift+t)
 prompt_new_tab_name = false
 
 # Claude Code のペインはターミナルタイトル(作業内容)をサイドバーに表示
+agent_panel_sort = "spaces"
 [ui.sidebar.agents.rows_by_agent]
 claude = [["state_icon", "workspace", "tab"], ["terminal_title_stripped"], ["agent"]]
 
