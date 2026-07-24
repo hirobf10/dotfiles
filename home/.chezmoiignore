@@ -38,3 +38,10 @@
 # Codex CLI のローカル状態・秘密（AGENTS.md のみ管理）
 .codex/*
 !.codex/AGENTS.md
+
+{{ if ne .chezmoi.os "darwin" }}
+# macOS 専用（Linux では適用しない）
+dock.sh
+macos-defaults.sh
+.config/ghostty
+{{ end }}
