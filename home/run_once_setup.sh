@@ -3,11 +3,38 @@ set -e
 
 echo "🚀 Starting development environment setup..."
 
+OS="$(uname -s)"
+if [ "$OS" = "Darwin" ]; then
+    BREW_PREFIX="/opt/homebrew"
+else
+    BREW_PREFIX="/home/linuxbrew/.linuxbrew"
+fi
+
+# Homebrew on Linux needs build tools and zsh is not preinstalled (Oh My Zsh requires it)
+if [ "$OS" = "Linux" ]; then
+    export NONINTERACTIVE=1
+    MISSING=()
+    for pkg in build-essential procps curl file git zsh; do
+        dpkg -s "$pkg" &>/dev/null || MISSING+=("$pkg")
+    done
+    if [ ${#MISSING[@]} -gt 0 ]; then
+        echo "📦 Installing prerequisites: ${MISSING[*]}"
+        if [ "$(id -u)" = "0" ]; then
+            apt-get update && apt-get install -y "${MISSING[@]}"
+        elif command -v sudo &>/dev/null; then
+            sudo apt-get update && sudo apt-get install -y "${MISSING[@]}"
+        else
+            echo "❌ Missing packages: ${MISSING[*]} (install them with apt and re-run)"
+            exit 1
+        fi
+    fi
+fi
+
 # Install Homebrew if not installed
 if ! command -v brew &>/dev/null; then
     echo "📦 Installing Homebrew..."
     /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-    eval "$(/opt/homebrew/bin/brew shellenv)"
+    eval "$("$BREW_PREFIX/bin/brew" shellenv)"
 fi
 
 # Install packages from the rendered Brewfile (applied to ~/Brewfile before scripts run)
@@ -67,9 +94,9 @@ if command -v herdr &>/dev/null; then
     fi
 fi
 
-# Install App Store apps. Skipped in CI: runners cannot sign in and
-# mas install hangs instead of failing fast.
-if command -v mas &>/dev/null && [ -z "${CI:-}" ]; then
+# Install App Store apps (macOS only). Skipped in CI: runners cannot sign in
+# and mas install hangs instead of failing fast.
+if [ "$OS" = "Darwin" ] && command -v mas &>/dev/null && [ -z "${CI:-}" ]; then
     echo "📚 Installing App Store apps..."
     mas list | grep -q "^302584613" \
         || mas install 302584613 \
@@ -87,7 +114,11 @@ fi
 # Install Google Cloud SDK
 if [ ! -x "$HOME/.google-cloud-sdk/bin/gcloud" ]; then
     echo "☁️  Installing Google Cloud SDK..."
-    GCLOUD_ARCHIVE="google-cloud-cli-darwin-arm.tar.gz"
+    if [ "$OS" = "Darwin" ]; then
+        GCLOUD_ARCHIVE="google-cloud-cli-darwin-arm.tar.gz"
+    else
+        GCLOUD_ARCHIVE="google-cloud-cli-linux-x86_64.tar.gz"
+    fi
 
     # Create temporary directory for installation
     TEMP_DIR=$(mktemp -d)
