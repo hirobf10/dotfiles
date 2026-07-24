@@ -60,6 +60,11 @@ if command -v herdr &>/dev/null; then
     # Install herdr plugins (keybindings live in ~/.config/herdr/config.toml)
     herdr plugin list --json 2>/dev/null | grep -q '"herdr-file-viewer"' \
         || herdr plugin install smarzban/herdr-file-viewer --yes
+
+    # Install the herdr agent skill (~/.agents/skills/herdr, symlinked into supported agents)
+    if command -v npx &>/dev/null && [ ! -d "$HOME/.agents/skills/herdr" ]; then
+        npx -y skills add ogulcancelik/herdr --skill herdr -g
+    fi
 fi
 
 # Install App Store apps. Skipped in CI: runners cannot sign in and
