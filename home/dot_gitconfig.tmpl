@@ -1,3 +1,7 @@
+{{- $brewPrefix := "/opt/homebrew" -}}
+{{- if ne .chezmoi.os "darwin" -}}
+{{- $brewPrefix = "/home/linuxbrew/.linuxbrew" -}}
+{{- end -}}
 [user]
 	name = {{ .name }}
 	email = {{ .email }}
@@ -17,7 +21,7 @@
 	root = ~/ghq
 [credential "https://github.com"]
 	helper =
-	helper = !/opt/homebrew/bin/gh auth git-credential
+	helper = !{{ $brewPrefix }}/bin/gh auth git-credential
 [credential "https://gist.github.com"]
 	helper =
-	helper = !/opt/homebrew/bin/gh auth git-credential
+	helper = !{{ $brewPrefix }}/bin/gh auth git-credential
