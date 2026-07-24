@@ -29,6 +29,15 @@ description = "open ghq repo as workspace"
 width = "60%"
 height = "60%"
 
+# ghq root 直下にリード用(横断タスク)ワークスペースを作る
+[[keys.command]]
+key = "prefix+shift+l"
+type = "popup"
+command = "sh ~/.config/herdr/scripts/lead-workspace.sh"
+description = "new lead workspace at ghq root"
+width = "50%"
+height = "20%"
+
 [ui]
 show_agent_labels_on_pane_borders = false
 # 新規タブの名前入力プロンプトを省略(リネームは prefix+shift+t)
