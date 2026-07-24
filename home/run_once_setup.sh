@@ -71,10 +71,11 @@ if command -v mise &>/dev/null; then
     mise install
 fi
 
-# Install uv (manages Python versions)
+# Install uv (manages Python versions). --no-modify-path keeps the installer
+# from appending to the managed ~/.zshrc; ~/.local/bin is already on PATH there.
 if ! command -v uv &>/dev/null; then
     echo "🐍 Installing uv..."
-    curl -LsSf https://astral.sh/uv/install.sh | sh
+    curl -LsSf https://astral.sh/uv/install.sh | sh -s -- --no-modify-path
 fi
 
 # Install the herdr integration for Codex (writes ~/.codex/{herdr-agent-state.sh,hooks.json})
