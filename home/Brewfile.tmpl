@@ -19,9 +19,11 @@ brew "stern"
 brew "k9s"
 
 # Utilities
+{{ if eq .chezmoi.os "darwin" -}}
 brew "mas"
 brew "defaultbrowser"
 brew "dockutil"
+{{ end -}}
 brew "jq"
 brew "yq"
 brew "bat"
@@ -45,7 +47,7 @@ brew "herdr"
 
 # Security
 brew "mkcert"
-
+{{ if eq .chezmoi.os "darwin" }}
 # AI tools
 cask "claude"
 cask "codex"
@@ -65,3 +67,4 @@ cask "google-chrome"
 cask "figma"
 cask "discord"
 cask "spotify"
+{{ end -}}
