@@ -88,6 +88,8 @@ if command -v herdr &>/dev/null; then
     # Install herdr plugins (keybindings live in ~/.config/herdr/config.toml)
     herdr plugin list --json 2>/dev/null | grep -q '"herdr-file-viewer"' \
         || herdr plugin install smarzban/herdr-file-viewer --yes
+    herdr plugin list --json 2>/dev/null | grep -q '"persiyanov.reviewr"' \
+        || herdr plugin install persiyanov/herdr-reviewr --yes
 
     # Install the herdr agent skill (~/.agents/skills/herdr, symlinked into supported agents)
     if command -v npx &>/dev/null && [ ! -d "$HOME/.agents/skills/herdr" ]; then

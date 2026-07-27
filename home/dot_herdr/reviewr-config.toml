@@ -1,0 +1,4 @@
+# herdr-reviewr configuration (see https://github.com/persiyanov/herdr-reviewr)
+
+# Open the sidebar on demand only (prefix+d); the default opens it in every new worktree
+auto_open = false

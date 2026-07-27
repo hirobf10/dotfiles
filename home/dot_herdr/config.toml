@@ -12,6 +12,13 @@ type = "shell"
 command = "herdr plugin action invoke open-file-viewer --plugin herdr-file-viewer"
 description = "open file viewer"
 
+# Toggle the code-review sidebar (persiyanov.reviewr plugin)
+[[keys.command]]
+key = "prefix+d"
+type = "plugin_action"
+command = "persiyanov.reviewr.toggle"
+description = "toggle reviewr"
+
 # lazygit をモーダル popup で開く(フォーカス中ペインの cwd のリポジトリ。閉じるとレイアウトは元のまま)
 [[keys.command]]
 key = "prefix+t"
