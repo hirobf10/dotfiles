@@ -9,6 +9,9 @@ brew "mise"
 brew "buf"
 brew "cue"
 brew "pnpm"
+# Runtime for the herdr-browser plugin (brew, not mise: the herdr server's PATH
+# has /opt/homebrew/bin but not the mise shims, so plugins can find it)
+brew "bun"
 
 # Container & Kubernetes
 brew "kind"

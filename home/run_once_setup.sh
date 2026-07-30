@@ -90,6 +90,9 @@ if command -v herdr &>/dev/null; then
         || herdr plugin install smarzban/herdr-file-viewer --yes
     herdr plugin list --json 2>/dev/null | grep -q '"persiyanov.reviewr"' \
         || herdr plugin install persiyanov/herdr-reviewr --yes
+    # Needs bun (Brewfile) and experimental.kitty_graphics in the herdr config
+    herdr plugin list --json 2>/dev/null | grep -q '"official.browser"' \
+        || herdr plugin install ogulcancelik/herdr-browser --yes
 
     # Install the herdr agent skill (~/.agents/skills/herdr, symlinked into supported agents)
     if command -v npx &>/dev/null && [ ! -d "$HOME/.agents/skills/herdr" ]; then
