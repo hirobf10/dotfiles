@@ -26,8 +26,12 @@ CLI の基本操作は公式 `herdr` スキルに従う。構文はインスト�
 sh <skill-dir>/scripts/agent-options.sh
 ```
 
-出力に含まれるもの: herdr が起動できる kind の一覧、claude の effort 候補、claude/codex の
-現在の既定モデルとエフォート、`--` 以降の渡し方。
+出力に含まれるもの: **`agents.toml` の役割別の既定**、herdr が起動できる kind の一覧、
+claude の effort 候補、claude/codex 側の既定、`--` 以降の渡し方。
+
+**既定値は同梱の `agents.toml` で管理する**(役割ごとに kind / model / effort)。確認する
+ときはこの既定を第一候補として提示し、承認だけで進められるようにする。ユーザーが別の
+組み合わせを指示したらそれに従い、**恒久的に変えたい意向なら `agents.toml` の更新を提案する**。
 
 **モデル名を列挙する CLI は claude/codex とも無い**ので、既定値と alias を選択肢として示し、
 ユーザーの自由入力も受け付ける(Claude Code なら AskUserQuestion の Other が使える)。

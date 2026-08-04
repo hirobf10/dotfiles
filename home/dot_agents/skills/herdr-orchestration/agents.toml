@@ -1,0 +1,20 @@
+# 子セッションの既定エージェント。
+#
+# scripts/agent-options.sh が読み、ユーザーに実装役/レビュー役を確認するときの
+# 既定候補として提示する。依頼に指定があればそちらが優先。
+#
+#   kind   … `herdr agent start --kind` に渡す値(候補は agent-options.sh の出力)
+#   model  … claude は `--model`、codex は `-m` に渡す値
+#   effort … claude は `--effort`、codex は `-c model_reasoning_effort=` に渡す値
+#
+# 空文字にするとその CLI 側の既定に任せる。
+
+[impl]
+kind = "claude"
+model = "claude-fable-5"
+effort = "xhigh"
+
+[review]
+kind = "codex"
+model = "gpt-5.6-sol"
+effort = "high"
