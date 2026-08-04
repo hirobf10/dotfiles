@@ -42,7 +42,7 @@ sh <skill-dir>/scripts/agent-options.sh
 
 ## ワークスペース構成
 
-- **親(リード)ワークスペースはタスク単位**。ラベルは `lead: <タスク>`。cwd は複数リポジトリ
+- **親(リード)ワークスペースはタスク単位**。ラベルはタスク名そのまま。cwd は複数リポジトリ
   横断なら ghq root(`ghq root`)、単一リポジトリなら その repo
 - **1 リポジトリ = 1 ワークスペース**(ラベル = repo 名)。使い捨てで、終わったら閉じる
 - **子セッションは worktree ワークスペース**。変更対象リポジトリ配下に作る
@@ -52,6 +52,30 @@ sh <skill-dir>/scripts/agent-options.sh
 `~/.claude/orchestration/<task-slug>/` に `plan.md` / `review-<n>.md` などを置く。
 `~/.claude` は Claude セッションの許可済みディレクトリなので子セッションから読める。
 **リポジトリ内には置かない**(コミットに混ざる)。後片付けでディレクトリごと削除する。
+
+## 命名規則
+
+herdr 側が自動で見せる情報を重複させないのが基準:
+
+- サイドバーの space 行は **branch と git_status を自動表示**する → ラベルにブランチ名を
+  入れない
+- ペイン境界は `show_agent_labels_on_pane_borders = false` なので、**名前を付けないと
+  何も出ない** → 分割したペインには必ず役割名を付ける
+
+| 対象 | 命名 | 例 |
+| --- | --- | --- |
+| 親(リード)ワークスペース | `<タスク>` | `キャッシュ層の追加` |
+| リポジトリワークスペース | repo 名(ghq ピッカーの既定) | `example-api` |
+| 子(worktree)ワークスペース | `<repo>: <タスク>` | `example-api: キャッシュ層の追加` |
+| タブ | 既定の番号のまま。付け直さない | `1` |
+| ペイン | 役割名 | `impl` / `review` |
+| エージェント名(CLI ターゲット) | `<task-slug>-<役割>` | `cache-layer-impl` |
+
+- ペイン名は `herdr pane rename <pane_id> <役割>` で、**エージェント起動直後に必ず付ける**。
+  どちらが実装でどちらがレビューか画面で判別できるようにするため
+- エージェント名は **live agent 全体で一意**でなければならない(herdr の制約)。並行タスクで
+  衝突しないよう task slug を前置し、`[a-z][a-z0-9_-]{0,31}` に収める
+- task slug は中間生成物ディレクトリ `~/.claude/orchestration/<task-slug>/` と揃える
 
 ## オーケストレーションの流れ
 
@@ -64,11 +88,12 @@ sh <skill-dir>/scripts/agent-options.sh
 1. 必要に応じて issue を作成する(`gh issue create`。作成の可否はユーザーに確認)
 2. プランのボリュームが大きい場合は `plan.md` に書き出し、子セッションが読める状態にする
 3. 変更対象リポジトリで worktree ワークスペースを作る(base は fetch 後の `origin/main`):
-   `herdr worktree create --cwd <repoパス> --branch <名前> --base origin/main --label "<task>: impl" --no-focus`
+   `herdr worktree create --cwd <repoパス> --branch <名前> --base origin/main --label "<repo>: <タスク>" --no-focus`
    → `root_pane` の pane_id が返る(worktree の置き場は `~/.herdr/worktrees/<repo>/<branch>`)
 4. その pane に実装エージェントを起動(種別・モデルはユーザー指定):
-   `herdr agent start impl --kind <kind> --pane <pane_id> -- <モデル引数>`
-5. `herdr agent prompt impl "<指示 / plan.md の絶対パス / issue 番号>" --wait --timeout <ms>`
+   `herdr agent start <slug>-impl --kind <kind> --pane <pane_id> -- <モデル引数>`
+5. ペインに役割名を付ける: `herdr pane rename <pane_id> impl`
+6. `herdr agent prompt <slug>-impl "<指示 / plan.md の絶対パス / issue 番号>" --wait --timeout <ms>`
 
 指示に**必ず含める**こと: **コミットまで行い、push と PR 作成はしない**。
 
@@ -81,8 +106,9 @@ sh <skill-dir>/scripts/agent-options.sh
 
 1. 実装ペインを分割する:
    `herdr pane split --pane <impl_pane_id> --direction down --cwd <worktreeパス> --no-focus`
-2. `herdr agent start reviewer --kind <kind> --pane <新pane_id> -- <モデル引数>`
-3. 差分の見方(`git diff origin/main...HEAD`)、`plan.md`、issue を渡す。指摘は
+2. `herdr agent start <slug>-review --kind <kind> --pane <新pane_id> -- <モデル引数>`
+3. ペインに役割名を付ける: `herdr pane rename <新pane_id> review`
+4. 差分の見方(`git diff origin/main...HEAD`)、`plan.md`、issue を渡す。指摘は
    `review-<n>.md` に書かせてパスだけ受け取る
 
 実装ペインとレビューペインは**どちらも生かしたまま**次の往復に使う。
@@ -90,7 +116,7 @@ sh <skill-dir>/scripts/agent-options.sh
 ### 4. 修正 ↔ レビューを繰り返す
 
 対応すべき指摘が出たら、生きている実装エージェントに投げ返す:
-`herdr agent prompt impl "<review-<n>.md の絶対パス> を読んで対応し、コミットまで行う" --wait`
+`herdr agent prompt <slug>-impl "<review-<n>.md の絶対パス> を読んで対応し、コミットまで行う" --wait`
 → 再レビュー。**レビュー通過まで繰り返す**。
 
 ただし**ループ上限を決めて**(3 往復程度)、超えたら自分で判断せずユーザーに状況を報告する。
