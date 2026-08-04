@@ -27,8 +27,8 @@ CLI の基本操作は公式 `herdr` スキルに従う。構文はインスト�
 ## worktree ワークスペースのライフサイクル
 
 1. ベースは fetch 後の `origin/main` を基本とする(ユーザーの作業フロー規約)
-2. `herdr worktree create --cwd <repoパス> --branch <名前> --base <REF> --no-focus --json` → worktree + ワークスペースが生成され `root_pane` が返る(置き場: `~/.herdr/worktrees/<repo>/<branch>`)
-3. `herdr agent start <名前> --workspace <ID> -- <agentコマンド>` で起動し、`agent send` → `agent wait --status idle` で完了を待つ(新しい herdr では `agent prompt --wait` 等に置き換わっている場合がある。help を確認)
+2. `herdr worktree create --cwd <repoパス> --branch <名前> --base <REF> --no-focus` → worktree + ワークスペースが生成され `root_pane` が返る(置き場: `~/.herdr/worktrees/<repo>/<branch>`)
+3. 返ってきた pane に `herdr agent start <名前> --kind <kind> --pane <pane_id>` で起動し、`herdr agent prompt <名前> "<指示>" --wait` で委譲する(公式スキルの記述どおり)
 4. 完了後 `herdr worktree remove --workspace <ID>`。**ブランチは残る**ので、破棄タスクなら別途 `git branch -d`
 
 ## 受け渡しと後始末
