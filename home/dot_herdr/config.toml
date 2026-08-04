@@ -58,10 +58,14 @@ show_agent_labels_on_pane_borders = false
 # 新規タブの名前入力プロンプトを省略(リネームは prefix+shift+t)
 prompt_new_tab_name = false
 
-# Claude Code のペインはターミナルタイトル(作業内容)をサイドバーに表示
 agent_panel_sort = "spaces"
-[ui.sidebar.agents.rows_by_agent]
-claude = [["state_icon", "workspace", "tab"], ["terminal_title_stripped"], ["agent"]]
+
+# サイドバーのエージェント行を全種別共通で拡張(claude / codex など区別しない):
+#   pane                   = 役割名(委譲したペインに付けた impl / review 等)
+#   terminal_title_stripped = 作業内容
+# トークンが解決できない行は herdr が行ごと省くので、報告しない種別でも空行にならない
+[ui.sidebar.agents]
+rows = [["state_icon", "workspace", "tab", "pane"], ["terminal_title_stripped"], ["agent"]]
 
 [ui.toast]
 delivery = "herdr"
