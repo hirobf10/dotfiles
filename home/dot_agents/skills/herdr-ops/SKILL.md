@@ -74,13 +74,18 @@ sh <skill-dir>/scripts/agent-options.sh
 
 ### 3. レビューを別の子セッションに委譲する
 
-実装セッションとは**別のペイン**で行う(同じ worktree を見る必要があるので、実装ペインを
-分割するのが基本):
+**実装と同じ worktree ワークスペース内に、別ペインを作って行う。**
+レビュー用に別ワークスペースは作らない。理由は、実装とレビューが並んで見えて
+**画面上で状況を把握しやすい**こと、同じ worktree の差分を見る必要があること、
+1 タスク = 1 ワークスペースに保つと後片付けも 1 回で済むこと:
 
-1. `herdr pane split --pane <impl_pane_id> --direction down --cwd <worktreeパス> --no-focus`
+1. 実装ペインを分割する:
+   `herdr pane split --pane <impl_pane_id> --direction down --cwd <worktreeパス> --no-focus`
 2. `herdr agent start reviewer --kind <kind> --pane <新pane_id> -- <モデル引数>`
 3. 差分の見方(`git diff origin/main...HEAD`)、`plan.md`、issue を渡す。指摘は
    `review-<n>.md` に書かせてパスだけ受け取る
+
+実装ペインとレビューペインは**どちらも生かしたまま**次の往復に使う。
 
 ### 4. 修正 ↔ レビューを繰り返す
 
