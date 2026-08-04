@@ -101,7 +101,9 @@ herdr 側が自動で見せる情報を重複させないのが基準:
 2. プランのボリュームが大きい場合は `plan.md` に書き出し、子セッションが読める状態にする
 3. 変更対象リポジトリで worktree ワークスペースを作る(base は fetch 後の `origin/main`):
    `herdr worktree create --cwd <repoパス> --branch <名前> --base origin/main --label "<repo>: <タスク>" --no-focus`
-   → `root_pane` の pane_id が返る(worktree の置き場は `~/.herdr/worktrees/<repo>/<branch>`)
+   → 応答の `root_pane` から **pane_id と cwd(= worktree の絶対パス)** を読む。以降の
+   `pane split` と親の git 操作にこのパスを使う(実体は `~/.herdr/worktrees/<repo>/<branch>` だが、
+   組み立てずに応答の値を使う)
 4. その pane に実装エージェントを起動(種別・モデルはユーザー指定):
    `herdr agent start <slug>-impl --kind <kind> --pane <pane_id> -- <モデル引数>`
 5. ペインに役割名を付ける: `herdr pane rename <pane_id> impl`
@@ -153,9 +155,14 @@ lint / test は実装役が通している前提。**レビュー役に実際に
 **レビュー通過後に初めてコミットする。** git 履歴を書くのは親だけで、子セッションには
 やらせない:
 
-1. worktree で内容を確認し(`git status --short` / `git diff origin/main`)、
+**親の cwd は worktree ではない**(ghq root か repo)ので、git は `-C` で worktree を指す:
+
+1. 内容を確認し(`git -C <worktreeパス> status --short` /
+   `git -C <worktreeパス> diff origin/main`)、
    **変更の性質ごとにコミットを分ける**(ユーザーの作業フロー規約)
-2. push して PR を作成する。issue があればリンクする
+2. `git -C <worktreeパス> push -u origin <branch>` → PR を作成する。
+   `gh` には `-C` が無いので **worktree をカレントにして実行する**(または `-R <owner>/<repo>`)。
+   issue があればリンクする
 
 lint / test は実装役とレビュー役で済んでいるので、親では実行しない。
 push / PR 作成はユーザー設定で確認が入る。
