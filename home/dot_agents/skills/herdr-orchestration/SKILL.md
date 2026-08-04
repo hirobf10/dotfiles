@@ -1,6 +1,6 @@
 ---
-name: herdr-ops
-description: "herdr 上でのマルチエージェント運用の個人規約。ユーザーが herdr でのリード役・実装/レビューの子セッションへの委譲・リポジトリや worktree ワークスペースの運用管理を頼んだときに、公式 herdr スキルと併せて読む。"
+name: herdr-orchestration
+description: "herdr 上で複数エージェントを束ねてタスクを進めるための個人規約。ユーザーが herdr でのリード役・実装/レビューの子セッションへの委譲・リポジトリや worktree ワークスペースの運用管理を頼んだときに、公式 herdr スキルと併せて読む。命名規則と後片付けの手順も含む。"
 ---
 
 # herdr 運用規約(個人)
