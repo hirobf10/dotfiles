@@ -6,17 +6,25 @@
 # from GitHub. The version below is interpolated at apply time, so upgrading herdr
 # changes this script and chezmoi re-runs it.
 #
-# First-time setup has no herdr yet when this template is rendered; setup.sh
-# writes the skill right after installing herdr, and this script takes over from
-# the next upgrade onward.
+# The binary is located without relying on PATH: Homebrew on Linux installs to
+# linuxbrew, which is not on PATH while chezmoi applies, and a version that
+# appeared only afterwards would leave this script pending on the next verify.
+{{- $herdr := lookPath "herdr" -}}
+{{- if not $herdr -}}
+{{-   range list "/opt/homebrew/bin/herdr" "/home/linuxbrew/.linuxbrew/bin/herdr" "/usr/local/bin/herdr" -}}
+{{-     if and (not $herdr) (stat .) -}}
+{{-       $herdr = . -}}
+{{-     end -}}
+{{-   end -}}
+{{- end }}
 
 set -eu
 
 # Runs standalone from any shell: brew's bin is not on bash's default PATH
 export PATH="/opt/homebrew/bin:/home/linuxbrew/.linuxbrew/bin:$PATH"
 
-{{ if lookPath "herdr" -}}
-# version: {{ output "herdr" "--version" | trim }}
+{{ if $herdr -}}
+# version: {{ output $herdr "--version" | trim }}
 if ! command -v herdr >/dev/null 2>&1; then
     echo "⚠️  herdr not found; skipping bundled skill" >&2
     exit 0
