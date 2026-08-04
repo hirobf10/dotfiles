@@ -107,7 +107,9 @@ herdr 側が自動で見せる情報を重複させないのが基準:
 5. ペインに役割名を付ける: `herdr pane rename <pane_id> impl`
 6. `herdr agent prompt <slug>-impl "<指示 / plan.md の絶対パス / issue 番号>" --wait --timeout <ms>`
 
-指示に**必ず含める**こと: **コミットまで行い、push と PR 作成はしない**。
+指示に**必ず含める**こと: **コミットしない**(git 履歴を書くのは親だけ。`git add` / `git commit` /
+`git push` / PR 作成はいずれも行わない)。変更は worktree の作業ツリーに置いたままにし、
+何をどう変えたかを報告させる。
 
 ### 3. レビューを別の子セッションに委譲する
 
@@ -120,29 +122,43 @@ herdr 側が自動で見せる情報を重複させないのが基準:
    `herdr pane split --pane <impl_pane_id> --direction down --cwd <worktreeパス> --no-focus`
 2. `herdr agent start <slug>-review --kind <kind> --pane <新pane_id> -- <モデル引数>`
 3. ペインに役割名を付ける: `herdr pane rename <新pane_id> review`
-4. 差分の見方(`git diff origin/main...HEAD`)、`plan.md`、issue を渡す。指摘は
-   `review-<n>.md` に書かせてパスだけ受け取る
+4. 差分の見方、`plan.md`、issue を渡す。指摘は `review-<n>.md` に書かせてパスだけ受け取る
+
+**差分はコミット前の作業ツリーを見る**(コミットは通過後に親が行うため、`origin/main...HEAD`
+では何も出ない):
+
+- `git status --short` … 変更ファイルの一覧
+- `git diff origin/main` … 変更内容(追跡済みファイル)
+- `??` の**新規ファイルは diff に出ない**ので、レビュー役に直接読ませる
 
 実装ペインとレビューペインは**どちらも生かしたまま**次の往復に使う。
 
 ### 4. 修正 ↔ レビューを繰り返す
 
 対応すべき指摘が出たら、生きている実装エージェントに投げ返す:
-`herdr agent prompt <slug>-impl "<review-<n>.md の絶対パス> を読んで対応し、コミットまで行う" --wait`
+`herdr agent prompt <slug>-impl "<review-<n>.md の絶対パス> を読んで対応する。コミットはしない" --wait`
 → 再レビュー。**レビュー通過まで繰り返す**。
 
 ただし**ループ上限を決めて**(3 往復程度)、超えたら自分で判断せずユーザーに状況を報告する。
 
-### 5. PR を作成する(親が行う)
+### 5. コミットして PR を作成する(親が行う)
 
-レビュー通過後、親が push と PR 作成を行う(子セッションにはやらせない)。
-issue があればリンクする。push / PR 作成はユーザー設定で確認が入る。
+**レビュー通過後に初めてコミットする。** git 履歴を書くのは親だけで、子セッションには
+やらせない:
+
+1. worktree で内容を確認し(`git status --short` / `git diff origin/main`)、
+   **変更の性質ごとにコミットを分ける**(ユーザーの作業フロー規約)
+2. push して PR を作成する。issue があればリンクする
+
+コミット前に lint / test を通す。push / PR 作成はユーザー設定で確認が入る。
 
 ### 6. 後片付け
 
 PR がマージされるなどタスクが完了したら:
 
-1. `herdr worktree remove --workspace <ID>` → **ブランチは残る**ので不要なら `git branch -d`
+1. `herdr worktree remove --workspace <ID>` → **ブランチは残る**ので不要なら `git branch -d`。
+   タスクを中断した場合は作業ツリーが未コミットのまま残るので、破棄してよいことを
+   ユーザーに確認した上で `--force` を付ける
 2. `~/.claude/orchestration/<task-slug>/` を削除
 3. 親ワークスペースを閉じる(ユーザーに確認)
 
@@ -151,7 +167,7 @@ PR がマージされるなどタスクが完了したら:
 - リードは「読む・調整する・委譲する」。**配下リポジトリのファイルを直接編集しない**
   (親ディレクトリ起動では各 repo の CLAUDE.md がコンテキストに載らないため)
 - 編集・実装は各 repo / worktree ワークスペースの子セッションに委譲する
-- 例外: push と PR 作成は親が行う(ファイル編集ではない)
+- 例外: **git 履歴を書くのは親だけ**。コミット・push・PR 作成は親が行う(ファイル編集ではない)
 
 ## 受け渡しと後始末
 
