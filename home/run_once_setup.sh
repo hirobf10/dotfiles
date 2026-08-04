@@ -97,9 +97,16 @@ if command -v herdr &>/dev/null; then
     # Expand the bundled agent skill (~/.agents/skills/herdr, read directly by most
     # agents; Claude Code gets it through the chezmoi-managed symlink). Upgrades are
     # handled by run_onchange_after_herdr-skill.sh, which keys off the herdr version.
-    SKILL_DIR="$HOME/.agents/skills/herdr"
-    mkdir -p "$SKILL_DIR"
-    herdr --skill >"$SKILL_DIR/SKILL.md"
+    # --skill needs herdr 0.8.0+, and a runner's brew index can lag behind it, so a
+    # missing option must not fail setup.
+    SKILL_TMP="$(mktemp)"
+    if herdr --skill >"$SKILL_TMP" 2>/dev/null && [ -s "$SKILL_TMP" ]; then
+        mkdir -p "$HOME/.agents/skills/herdr"
+        mv "$SKILL_TMP" "$HOME/.agents/skills/herdr/SKILL.md"
+    else
+        rm -f "$SKILL_TMP"
+        echo "⚠️  herdr --skill unavailable (needs 0.8.0+); skipping the bundled agent skill"
+    fi
 fi
 
 # Install App Store apps (macOS only). Skipped in CI: runners cannot sign in

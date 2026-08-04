@@ -22,10 +22,18 @@ if ! command -v herdr >/dev/null 2>&1; then
     exit 0
 fi
 
-dir="$HOME/.agents/skills/herdr"
-mkdir -p "$dir"
-herdr --skill >"$dir/SKILL.md"
-echo "🐑 Wrote the herdr agent skill to $dir/SKILL.md"
+# --skill needs herdr 0.8.0+; skip quietly on older versions rather than
+# leaving a truncated SKILL.md behind
+tmp="$(mktemp)"
+if herdr --skill >"$tmp" 2>/dev/null && [ -s "$tmp" ]; then
+    dir="$HOME/.agents/skills/herdr"
+    mkdir -p "$dir"
+    mv "$tmp" "$dir/SKILL.md"
+    echo "🐑 Wrote the herdr agent skill to $dir/SKILL.md"
+else
+    rm -f "$tmp"
+    echo "⚠️  herdr --skill unavailable (needs 0.8.0+); skipping the bundled agent skill" >&2
+fi
 {{- else -}}
 # herdr is not installed yet; setup.sh writes the skill after installing it.
 :

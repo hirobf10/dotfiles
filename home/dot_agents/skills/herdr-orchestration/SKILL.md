@@ -32,11 +32,23 @@ sh <skill-dir>/scripts/agent-options.sh
 **モデル名を列挙する CLI は claude/codex とも無い**ので、既定値と alias を選択肢として示し、
 ユーザーの自由入力も受け付ける(Claude Code なら AskUserQuestion の Other が使える)。
 
+## 子セッションは auto mode で起動する
+
+委譲した実装役・レビュー役は、逐一の許可待ちで止まらないよう **auto mode 相当で起動する**
+(親が `agent prompt --wait` で待っている間、子が確認待ちで固まるのを防ぐ)。
+
 渡し方は `agent start` の `--` 以降にネイティブ引数を置く:
 
-- claude: `-- --model claude-fable-5 --effort xhigh`(`fable` などの alias も可)
-- codex: `-- -m gpt-5.6-sol -c model_reasoning_effort=high`
-- 上記以外の kind は、そのエージェントの `--help` で指定方法を確認してから起動する
+- claude: `-- --permission-mode auto --model claude-fable-5 --effort xhigh`
+  (`--model` は `fable` などの alias も可)
+- codex: `-- -a on-request -s workspace-write -m gpt-5.6-sol -c model_reasoning_effort=high`
+  (`-a on-request` = 必要時のみ確認、`-s workspace-write` = worktree 内は書き込み可)
+- 上記以外の kind は、そのエージェントの `--help` で auto 相当の指定方法を確認してから起動する
+
+**許可を完全にスキップするフラグは使わない**(claude の `--dangerously-skip-permissions`、
+codex の `--dangerously-bypass-approvals-and-sandbox`)。auto mode は危険な操作では
+ユーザーに上がってくるので、その挙動を保つ。子が `blocked` で止まったら親が
+`agent get` / `agent read` で状況を確認し、判断が必要ならユーザーに上げる。
 
 実装とレビューを別種のエージェントにするとクロスチェックになる(推奨。強制ではない)。
 
