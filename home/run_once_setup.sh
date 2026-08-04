@@ -94,10 +94,12 @@ if command -v herdr &>/dev/null; then
     herdr plugin list --json 2>/dev/null | grep -q '"official.browser"' \
         || herdr plugin install ogulcancelik/herdr-browser --yes
 
-    # Install the herdr agent skill (~/.agents/skills/herdr, symlinked into supported agents)
-    if command -v npx &>/dev/null && [ ! -d "$HOME/.agents/skills/herdr" ]; then
-        npx -y skills add ogulcancelik/herdr --skill herdr -g
-    fi
+    # Expand the bundled agent skill (~/.agents/skills/herdr, read directly by most
+    # agents; Claude Code gets it through the chezmoi-managed symlink). Upgrades are
+    # handled by run_onchange_after_herdr-skill.sh, which keys off the herdr version.
+    SKILL_DIR="$HOME/.agents/skills/herdr"
+    mkdir -p "$SKILL_DIR"
+    herdr --skill >"$SKILL_DIR/SKILL.md"
 fi
 
 # Install App Store apps (macOS only). Skipped in CI: runners cannot sign in

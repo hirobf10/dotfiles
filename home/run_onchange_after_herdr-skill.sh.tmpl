@@ -1,0 +1,32 @@
+#!/bin/bash
+# Expand herdr's bundled agent skill into ~/.agents/skills/herdr.
+#
+# `herdr --skill` (0.8.0+) prints the skill shipped inside the running binary, so
+# the skill always matches the installed herdr instead of a pinned copy fetched
+# from GitHub. The version below is interpolated at apply time, so upgrading herdr
+# changes this script and chezmoi re-runs it.
+#
+# First-time setup has no herdr yet when this template is rendered; setup.sh
+# writes the skill right after installing herdr, and this script takes over from
+# the next upgrade onward.
+
+set -eu
+
+# Runs standalone from any shell: brew's bin is not on bash's default PATH
+export PATH="/opt/homebrew/bin:/home/linuxbrew/.linuxbrew/bin:$PATH"
+
+{{ if lookPath "herdr" -}}
+# version: {{ output "herdr" "--version" | trim }}
+if ! command -v herdr >/dev/null 2>&1; then
+    echo "⚠️  herdr not found; skipping bundled skill" >&2
+    exit 0
+fi
+
+dir="$HOME/.agents/skills/herdr"
+mkdir -p "$dir"
+herdr --skill >"$dir/SKILL.md"
+echo "🐑 Wrote the herdr agent skill to $dir/SKILL.md"
+{{- else -}}
+# herdr is not installed yet; setup.sh writes the skill after installing it.
+:
+{{- end }}
