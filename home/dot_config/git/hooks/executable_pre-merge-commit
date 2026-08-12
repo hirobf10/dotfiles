@@ -1,0 +1,10 @@
+#!/bin/sh
+# Global hook (core.hooksPath): chain to the repository's own hook.
+# Generic by design: resolves the hook name from its own filename, so the
+# same file works for any hook. Resolve via --git-dir, NOT --git-path
+# hooks/...: the latter follows core.hooksPath back here and recurses.
+
+repo_hook="$(git rev-parse --git-dir)/hooks/$(basename "$0")"
+if [ -x "$repo_hook" ]; then
+    exec "$repo_hook" "$@"
+fi
