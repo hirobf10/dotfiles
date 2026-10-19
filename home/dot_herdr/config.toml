@@ -19,11 +19,11 @@ type = "plugin_action"
 command = "persiyanov.reviewr.toggle"
 description = "toggle reviewr"
 
-# ブラウザペインを右分割で開く(official.browser プラグイン。prefix+b はサイドバー開閉のため shift 付き)
+# ブラウザペインを右分割で開く(prefix+b はサイドバー開閉のため shift 付き)
 [[keys.command]]
 key = "prefix+shift+b"
-type = "shell"
-command = '"${HERDR_BIN_PATH}" plugin pane open --plugin official.browser --entrypoint browser --placement split --direction right --focus'
+type = "plugin_action"
+command = "zenbu-labs.terminal-browser.open-split"
 description = "open browser in right split"
 
 # lazygit をモーダル popup で開く(フォーカス中ペインの cwd のリポジトリ。閉じるとレイアウトは元のまま)
@@ -71,7 +71,7 @@ rows = [["state_icon", "workspace", "tab", "pane"], ["terminal_title_stripped"],
 delivery = "herdr"
 
 [experimental]
-# ペイン内の画像描画(herdr-browser プラグインが Chromium を描くのに必要。Ghostty は対応)
+# ペイン内の画像描画(Ghostty は対応)
 kitty_graphics = true
 # prefix モード中は英数入力に自動切替(IME が日本語のままキーが効かない対策)
 switch_ascii_input_source_in_prefix = true

@@ -82,6 +82,13 @@ fi
 # The Claude Code side is managed by chezmoi instead: `herdr integration install claude`
 # would write a machine-specific absolute path into the repo-symlinked settings.json.
 if command -v herdr &>/dev/null; then
+    # reviewr requires Herdr 0.9.3; only upgrade its host when incompatible.
+    HERDR_VERSION="$(herdr --version | awk '{print $2}')"
+    if ! printf '%s\n' "$HERDR_VERSION" | awk -F. '{ exit !($1 > 0 || $2 > 9 || ($2 == 9 && $3 >= 3)) }'; then
+        brew update
+        brew upgrade herdr
+    fi
+
     echo "🐑 Installing herdr integration..."
     herdr integration install codex
 
@@ -90,9 +97,8 @@ if command -v herdr &>/dev/null; then
         || herdr plugin install smarzban/herdr-file-viewer --yes
     herdr plugin list --json 2>/dev/null | grep -q '"persiyanov.reviewr"' \
         || herdr plugin install persiyanov/herdr-reviewr --yes
-    # Needs bun (Brewfile) and experimental.kitty_graphics in the herdr config
-    herdr plugin list --json 2>/dev/null | grep -q '"official.browser"' \
-        || herdr plugin install ogulcancelik/herdr-browser --yes
+    herdr plugin list --json 2>/dev/null | grep -q '"zenbu-labs.terminal-browser"' \
+        || TERMINAL_BROWSER_SKIP_SETUP=1 herdr plugin install zenbu-labs/terminal-browser/herdr-plugin --yes
 
     # Expand the bundled agent skill (~/.agents/skills/herdr, read directly by most
     # agents; Claude Code gets it through the chezmoi-managed symlink). Upgrades are

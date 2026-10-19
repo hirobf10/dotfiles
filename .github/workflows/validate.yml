@@ -59,6 +59,8 @@ jobs:
         check 'mise which terraform' "terraform via mise"
         check 'mise which spanner-cli' "spanner-cli via mise"
         check 'command -v tkn' "tkn installed"
+        check 'test -x ~/.local/bin/terminal-browser' "Terminal Browser installed"
+        check 'herdr plugin list --json | grep -Fq zenbu-labs.terminal-browser' "Terminal Browser plugin"
         check 'test -x ~/.google-cloud-sdk/bin/gcloud' "gcloud installed"
 
         echo -e "\n=== Verifying symlinks ==="
