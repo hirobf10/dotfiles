@@ -97,8 +97,6 @@ if command -v herdr &>/dev/null; then
         || herdr plugin install smarzban/herdr-file-viewer --yes
     herdr plugin list --json 2>/dev/null | grep -q '"persiyanov.reviewr"' \
         || herdr plugin install persiyanov/herdr-reviewr --yes
-    herdr plugin list --json 2>/dev/null | grep -q '"zenbu-labs.terminal-browser"' \
-        || TERMINAL_BROWSER_SKIP_SETUP=1 herdr plugin install zenbu-labs/terminal-browser/herdr-plugin --yes
 
     # Expand the bundled agent skill (~/.agents/skills/herdr, read directly by most
     # agents; Claude Code gets it through the chezmoi-managed symlink). Upgrades are
